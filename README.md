@@ -229,6 +229,35 @@ streamDF.writeStream
 
   ![image](https://github.com/user-attachments/assets/f4faef87-20b4-47f0-9cf2-bc3ee6492dcc)
 
+> ## Deleta Live Tables
+- Data pipelines
+- Change Data Capture
+  -  Process of identifying changes (Insert, Update, Delete) made to data in the source and delivering those changes to the target
+  - APPLY CHANGES INTO Statement
+    - Orders late-arriving records using the sequencing key
+    - Default assumption is that rows will contain inserts and updates
+    - Can optionally apply deletes (APPLY AS DELETE WHEN condition)
+    - Specify one or many fields as the primary key for a table
+    - Specify columns to ignore with the EXCEPT keyword
+    - Support applying changes as SCD Type 1 (default) or SCD Type 2
+    - Breaks the append-only requirements for streaming table sources. So, Cannot perform streaming queries against the table
+    ```
+    APPLY CHANGES INTO LIVE.target_table
+    FROM STREAM(LIVE.cdc_feed_table)
+    KEYS (key_field)
+    APPLY AS DELETE WHEN operation_field = "DELETE"
+    SEQUENCE BY sequence_field
+    COLUMNS *;
+    ```
+  - 
+
+
+> ## Data Governance
+- Programmatically grant, deny, and revoke access to data objects
+- GRANT <Privilege> ON <Object> <object-name> TO <user or group>
+- Other Operations include: GRANT, DENY, REVOKE, SHOW GRANTS
+
+
 
 
 
