@@ -254,8 +254,14 @@ streamDF.writeStream
 
 > ## Data Governance
 - Programmatically grant, deny, and revoke access to data objects
-- GRANT <Privilege> ON <Object> <object-name> TO <user or group>
-- Other Operations include: GRANT, DENY, REVOKE, SHOW GRANTS
+- Operations include: GRANT, DENY, REVOKE, SHOW GRANTS
+- GRANT `Privilege` ON `Object` object-name TO userOrGroup
+
+  ![image](https://github.com/user-attachments/assets/342f50f6-c886-41a2-bd6c-2b43c65eb8bd)
+
+  ![image](https://github.com/user-attachments/assets/079e5857-cf99-4ebf-9fe6-6926339746f2)
+
+
 
 
 
