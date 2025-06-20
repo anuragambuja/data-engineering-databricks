@@ -169,11 +169,14 @@ ALTER TABLE orders ADD CONSTRAINT valid_date CHECK (date > '2020-01-01');
   - Exactly-once guarantee
       - Idempotent sinks
 
-
 - Trigger Intervals
 
+    ![image](https://github.com/user-attachments/assets/a51a08d2-5192-4ca5-ac93-778db569ecf0)
+
 - Output Modes 
-  
+
+    ![image](https://github.com/user-attachments/assets/4857d2ed-ad46-4cc3-a7df-a26411e24917)
+
 - Checkpointing
   - Store stream state. Used to track the progress of your stream processing
   - Can Not be shared between separate streams
@@ -223,7 +226,9 @@ streamDF.writeStream
 > ## Multi-Hop Architecture
 - Medallion Architecture
 - Organize data in multi-layered approach
-- 
+
+  ![image](https://github.com/user-attachments/assets/f4faef87-20b4-47f0-9cf2-bc3ee6492dcc)
+
 
 
 
