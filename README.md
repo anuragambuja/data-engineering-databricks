@@ -156,7 +156,80 @@ ALTER TABLE orders ADD CONSTRAINT valid_date CHECK (date > '2020-01-01');
     - Just copy the Delta transaction logs
     - CREATE TABLE table_clone SHALLOW CLONE source_table;
 
+> ## Data Stream
+- Any data source that grows over time
+  - New files landing in cloud storage
+  - Updates to a database captured in a CDC feed
+  - Events queued in a pub/sub messaging feed
+- Unsupported Operations: Sorting, Deduplication
+- Spark Streaming guarantees:
+  - Fault Tolerance
+    - Checkpointing + Write-ahead logs
+      - record the offset range of data being processed during each trigger interval.
+  - Exactly-once guarantee
+      - Idempotent sinks
+
+
+- Trigger Intervals
+
+- Output Modes 
+  
+- Checkpointing
+  - Store stream state. Used to track the progress of your stream processing
+  - Can Not be shared between separate streams
+
+```
+streamDF = spark.readStream
+  .table("Input_Table")
+
+streamDF.writeStream
+  .trigger(processingTime="2 minutes")
+  .outputMode("append")
+  .option("checkpointLocation", "/path")
+  .table("Output_Table")
+
+```
+
+- Incremental Data Ingestion
+  - Loading new data files encountered since the last ingestion. 
+  - Two Mechnisms:
+    - COPY INTO
+      - SQL command
+      - Idempotently and incrementally load new data files: Files that have already been loaded are skipped.
+      - Thousands of files. Less efficient at scale
+      ```
+      COPY INTO my_table
+      FROM '/path/to/files’
+      FILEFORMAT = CSV -- JSON
+      FORMAT_OPTIONS ('delimiter' = '|’, 'header' = 'true', ...)
+      COPY_OPTIONS ('mergeSchema' = 'true’);
+      ```
+    - Auto loader
+      - Structured Streaming. Support near real-time ingestion of millions of files per hour.
+      - Can process billions of files.
+      - Store metadata of the discovered files
+      - Exactly-once guarantees. Fault tolerance
+      ```
+      spark.readStream
+          .format("cloudFiles")
+          .option("cloudFiles.format", <source_format>)
+          .option("cloudFiles.schemaLocation", <schema_directory>)
+          .load('/path/to/files’)
+        .writeStream
+          .option("checkpointLocation", <checkpoint_directory>)
+          .option("mergeSchema", “true”)
+          .table(<table_name>)
+      ```
+> ## Multi-Hop Architecture
+- Medallion Architecture
+- Organize data in multi-layered approach
 - 
+
+
+
+
+
+
 
 
 
