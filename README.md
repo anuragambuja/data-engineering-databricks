@@ -229,6 +229,12 @@ streamDF.writeStream
 
   ![image](https://github.com/user-attachments/assets/f4faef87-20b4-47f0-9cf2-bc3ee6492dcc)
 
+- Bronze Ingestion Patterns
+  - Singleplex: One-to-One mapping
+    
+  - Multiplex: Many-to-One mapping
+
+
 > ## Deleta Live Tables
 - Data pipelines
 - Change Data Capture
@@ -287,9 +293,12 @@ streamDF.writeStream
 
 
 
-
-
-
+> Slowly Changing Dimensions
+- Data management concept that determines how tables handle data which change over time
+- SCD Types:
+  - Type 0: No changes allowed. Static/Append only
+  - Type 1: Overwrite. No history retained (use Delta Time Travel if needed but vacuum can delete the history)
+  - Type 2: Add new row for each change and mark the old as obsolete. Retains the full history of values.
 
 
 
