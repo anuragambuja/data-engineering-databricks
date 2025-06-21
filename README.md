@@ -246,8 +246,21 @@ streamDF.writeStream
 > ## Deleta Live Tables
 - Data pipelines
 - Change Data Capture
-  -  Process of identifying changes (Insert, Update, Delete) made to data in the source and delivering those changes to the target
-  - APPLY CHANGES INTO Statement
+  - Process of identifying changes (Insert, Update, Delete) made to data in the source and delivering those changes to the target.
+  - Processing CDC feed using MERGE
+    ```
+    MERGE INTO target_table t
+    USING source_updates s
+    ON t.key_field = s.key_field
+    WHEN MATCHED AND t.sequence_field < s.sequence_field
+    THEN UPDATE SET *
+    WHEN MATCHED AND s.operation_field = "DELETE"
+    THEN DELETE
+    WHEN NOT MATCHED
+    THEN INSERT *
+    ```
+    - Merge can not be performed if multiple source rows matched and attempted to modify the same target row in the Delta table. Use `rank().over(Window)` to fix the issue. 
+  - APPLY CHANGES INTO Statement for Delta Live Tables
     - Orders late-arriving records using the sequencing key
     - Default assumption is that rows will contain inserts and updates
     - Can optionally apply deletes (APPLY AS DELETE WHEN condition)
@@ -263,7 +276,31 @@ streamDF.writeStream
     SEQUENCE BY sequence_field
     COLUMNS *;
     ```
-  - 
+  - Delta Lake Change Data Feed (CDF)
+    - Automatically generate CDC feeds about Delta Lake tables.
+    - Records row-level changes for all data written into a Delta table i.e. Row data + metadata (whether row was inserted, deleted, or updated)
+    - Change Type:
+      - The update_preimage offers a snapshot of the row before any updates.
+      - The update_postimage provides its state after the changes.
+    - Querying the change data
+      ```
+      SELECT *
+      FROM table_changes('table_name’, start_version, [end_version]);
+
+      SELECT *
+      FROM table_changes('table_name’, start_timestamp, [end_timestamp]);
+      ```
+    - Enabling CDF
+      - New tables: `CREATE TABLE myTable (id INT, name STRING) TBLPROPERTIES (delta.enableChangeDataFeed = true);`
+      - Existing table: `ALTER TABLE myTable SET TBLPROPERTIES (delta.enableChangeDataFeed = true);`
+      - All new tables: `spark.databricks.delta.properties.defaults.enableChangeDataFeed`
+    - When running VACUUM, CDF data is also deleted.
+    - Use CDF when:
+      - Table’s changes include updates and/or deletes
+      - Small franction of records updated in each batch (from CDC feed)
+    - Don’t use CDF when:
+      - Table’s changes are appendonly
+      - Most records in the table updated in each batch
 
 
 > ## Data Governance
@@ -307,6 +344,36 @@ streamDF.writeStream
   - Type 0: No changes allowed. Static/Append only
   - Type 1: Overwrite. No history retained (use Delta Time Travel if needed but vacuum can delete the history)
   - Type 2: Add new row for each change and mark the old as obsolete. Retains the full history of values.
+
+
+> ## Partitioning Delta Lake Tables
+- A partition is a subset of rows that share the same value for predefined partitioning columns
+```
+CREATE TABLE my_table (id INT, name STRING, year INT, month INT)
+PARTITIONED BY (year, month);
+
+DELETE FROM my_table
+Where year < 2023;
+```
+- Choosing partition columns
+- Low cardinality fields should be used for partitioning
+- Partitions should be at least 1 GB in size. If most partitions < 1GB of data, the table is over-partitioned.
+- In case records with a given value will continue to arrive indefinitely, use Datetime fields as partition column
+- Files cannot be combined or compacted across partition boundaries. So, Partitioned small tables increase storage costs and total number of files to scan.
+```
+spark.readStream
+  .option("ignoreDeletes", True)  # Keeps table streamable on partition deletes
+  .table("my_table")
+```
+- Use `vacuum` to delete at partition boundaries. 
+
+> ## Stream vs. Static tables
+- Streaming tables are ever-appending data sources
+- Static tables contain data that may be changed or overwritten. It breaks the requirement of an ever-appending source for Structured Streaming.
+- Streaming drives the join. 
+  - Change in static table does not trigger the stream processing. 
+  - Unmatched records in the Stream will not be pushed to output table. 
+- Stream-static joins are not stateful. So even if the unmatched key arrives in static table later, the streaming mismatched record is not processed. 
 
 
 
