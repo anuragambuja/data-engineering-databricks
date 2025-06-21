@@ -231,8 +231,16 @@ streamDF.writeStream
 
 - Bronze Ingestion Patterns
   - Singleplex: One-to-One mapping
-    
+
+      ![image](https://github.com/user-attachments/assets/0b19b42f-8964-4f77-9347-be655a427e9e)
+
   - Multiplex: Many-to-One mapping
+
+      ![image](https://github.com/user-attachments/assets/045bc758-47b2-413a-941c-f9a5aac5b017)
+
+    - Promoting to Silver layer
+
+        ![image](https://github.com/user-attachments/assets/1090cf23-7ba0-483c-9ca0-d623e73f6b88)
 
 
 > ## Deleta Live Tables
