@@ -277,6 +277,14 @@ streamDF.writeStream
   - Built-in data search and discovery
   - Automated lineage
   - No hard migration required from Catalog to Unity Catalog
+  - Architecture
+
+      ![image](https://github.com/user-attachments/assets/48412111-aa8f-4c5e-acf4-1e09cd52b697)
+
+  - Hierarchy
+
+      ![image](https://github.com/user-attachments/assets/406ef24b-907f-48e1-8835-4884afb624cb)
+
 
 
 
