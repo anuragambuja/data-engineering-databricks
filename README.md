@@ -373,7 +373,9 @@ spark.readStream
 - Streaming drives the join. 
   - Change in static table does not trigger the stream processing. 
   - Unmatched records in the Stream will not be pushed to output table. 
-- Stream-static joins are not stateful. So even if the unmatched key arrives in static table later, the streaming mismatched record is not processed. 
+- Stream-static joins are not stateful. So even if the unmatched key arrives in static table later, the streaming mismatched record is not processed. e.g. In below snapshot, the late arrival of `course id = C03` does not lead to processing of the data in stream. 
+
+    ![image](https://github.com/user-attachments/assets/7f26e62c-3056-4c6a-b86b-5cc8da3443e9)
 
 
 
