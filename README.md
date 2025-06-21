@@ -261,6 +261,22 @@ streamDF.writeStream
 
   ![image](https://github.com/user-attachments/assets/079e5857-cf99-4ebf-9fe6-6926339746f2)
 
+- Unity Catalog
+  - Centralized governance solution across all your workspaces on any cloud.
+  - Unify governance for all data and AI assets
+    - files, tables, machine learning models and dashboards
+    - based on SQL
+    - Follows 3-level namespace i.e. `SELECT * FROM catalog.schema.table `
+  - Identities
+    - Users: identified by e-mail addresses
+      - Account administrator
+    - Service Principles: identified by Application IDs
+      - Service Principles with administrative privilege
+    - Groups: grouping Users and Service Principles
+      - Nested groups
+  - Built-in data search and discovery
+  - Automated lineage
+  - No hard migration required from Catalog to Unity Catalog
 
 
 
