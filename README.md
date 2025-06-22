@@ -71,6 +71,33 @@
 - Compaction
   - Compacting Small Files
   - OPTIMIZE my_table
+  - Auto Optimize
+    - Automatically compacts small files during individual writes to a table
+    - 2 complementary features
+      1. Optimized writes: attempts to write 128 MB files
+      2. Auto compaction:
+        - After the write completes, it checks if files can further be compacted
+        - If yes, it runs an OPTIMIZE job toward a file size of 128 MB (instead of 1 GB)
+    - No Z-Ordering
+    - Enabling Auto Optimize
+      - New tables: 
+        ```
+        CREATE TABLE myTable (id INT, name STRING) 
+        TBLPROPERTIES (delta.autoOptimize.optimizeWrite = true,
+                        delta.autoOptimize.autoCompact = true);
+        ```
+      - Existing table:
+        ```
+        ALTER TABLE myTable
+        SET TBLPROPERTIES (delta.autoOptimize.optimizeWrite = true,
+      delta.autoOptimize.autoCompact = true);
+        ```
+      - For the entire Spark sessions:
+        ```
+        spark.databricks.delta.optimizeWrite.enabled
+        spark.databricks.delta.autoCompact.enabled
+       ```
+    - For Frequent MERGE operations, Optimized Writes and Auto Compaction will generate data files smaller than 128 MB. This helps in reducing the duration of future MERGE operations.
 
 - Indexing
   - Co-locate column information
@@ -391,6 +418,20 @@ spark.readStream
 - Stream-static joins are not stateful. So even if the unmatched key arrives in static table later, the streaming mismatched record is not processed. e.g. In below snapshot, the late arrival of `course id = C03` does not lead to processing of the data in stream. 
 
     ![image](https://github.com/user-attachments/assets/7f26e62c-3056-4c6a-b86b-5cc8da3443e9)
+
+
+> ## Dynamic Views 
+- Allows access control list (ACL) to be applied on the data at the column and row level.
+- 
+
+> ## Data Pipeline Testing 
+- Unit testing
+  - Approach to testing individual units of code, such as functions.
+  - An assertion is a statement that enables you to test the assumptions you have made in your code. `assert func() == expected_value`
+- Integration Testing
+  - Software modules are integrated logically and tested as a group.
+- End-to-End Testing
+  - Approach to ensure that your application can run properly under real-world scenarios
 
 
 
