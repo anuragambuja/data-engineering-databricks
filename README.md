@@ -30,7 +30,9 @@
   - Ordered records of every transaction performed on the table
   - Single Source of Truth
   - Spark needs to process many tiny, inefficient JSON files in order to the resolve the current table state. So, Databricks automatically creates Parquet checkpoint files every 10 commits to accelerate the resolution of the current table state. Then, Spark only has to perform incremental processing of newly added JSON files.
-    
+
+    ![image](https://github.com/user-attachments/assets/7b16990d-cd6c-4fdc-9a06-aef6639c2937)
+
   - Running the VACUUM does not delete Delta log files. Log files are automatically cleaned up by Databricks. Each time a checkpoint is written, Databricks automatically cleans up log entries older than the log retention interval (default: 30 days)
     - By default, you can time travel to a Delta table only up to 30 days old. `delta.logRetentionDuration` controls how long the history for a table is kept
   - JSON file contains commit information:
