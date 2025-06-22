@@ -29,9 +29,22 @@
 - Transaction log (Delta log)
   - Ordered records of every transaction performed on the table
   - Single Source of Truth
+  - Spark needs to process many tiny, inefficient JSON files in order to the resolve the current table state. So, Databricks automatically creates Parquet checkpoint files every 10 commits to accelerate the resolution of the current table state. Then, Spark only has to perform incremental processing of newly added JSON files.
+    
+  - Running the VACUUM does not delete Delta log files. Log files are automatically cleaned up by Databricks. Each time a checkpoint is written, Databricks automatically cleans up log entries older than the log retention interval (default: 30 days)
+    - By default, you can time travel to a Delta table only up to 30 days old. `delta.logRetentionDuration` controls how long the history for a table is kept
   - JSON file contains commit information:
     - Operation performed + Predicates used
     - data files affected (added/removed)
+  - Delta Lake captures statistics in the transaction log for each added data file. 
+    - Statistics indicate per file:
+      1. Total number of records: Statistics on the first 32 columns of the table. Nested fields count when determining the first 32 columns Example: 4 struct fields with 8 nested fields will total to the 32 columns.
+      2. Minimum value in each column
+      3. Maximum value in each column
+      4. Null value counts for each of the columns
+    - Statistics will always be leveraged for file skipping.
+    - Statistics are uninformative for string fields with very high cardinality. Example: free text fields. Move them outside the first 32 columns
+
 - Delta Lake Advantages
   - Brings ACID transactions to object storage
   - Handle scalable metadata
