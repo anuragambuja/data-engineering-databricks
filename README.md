@@ -433,7 +433,12 @@ spark.readStream
 - End-to-End Testing
   - Approach to ensure that your application can run properly under real-world scenarios
 
+> ## Cluster Access Management
+- You can configure two types of cluster permissions:
+  1. The ‘Allow cluster creation’ entitlement controls your ability to create clusters.
+  2. Cluster-level permissions control your ability to use and modify a specific cluster. There are four permission levels for a cluster: No Permissions, Can Attach To, Can Restart, and Can Manage. The table lists the abilities for each permission:
 
+    ![image](https://github.com/user-attachments/assets/95eb3c46-b4bc-49d1-84d8-976563ee3aa3)
 
 
 
