@@ -440,7 +440,7 @@ spark.readStream
 
     ![image](https://github.com/user-attachments/assets/95eb3c46-b4bc-49d1-84d8-976563ee3aa3)
 
-
+- Job Clusters are dedicated clusters for a job or task run. A job cluster auto terminates once the job is completed, which saves cost compared to all-purpose clusters. In addition, Databricks recommends using job clusters in production so that each job runs in a fully isolated environment.
 
 
 
