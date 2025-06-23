@@ -1,4 +1,4 @@
-[Databricks Certified Data Engineer Associate](https://databricks.com/learn/certification/data-engineer-associate)
+[Databricks Certified Data Engineer Professional](https://www.databricks.com/learn/certification/data-engineer-professional)
 
 ```
 1. A data engineer wants to pass multiple parameters from a Databricks Job to a notebook. They already configured the key and value of each parameter in the configurations of the job. Which of the following utilities can the data engineer use to read the passed parameters inside the notebook ?
