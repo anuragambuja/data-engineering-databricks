@@ -9,7 +9,7 @@
   D. A data lakehouse utilizes proprietary storage formats for data.
   E. A data lakehouse enables both batch and streaming analytics.
 
-Ans: E
+Ans: E.
 ```
 ```
 2. Which of the following locations hosts the driver and worker nodes of a Databricks-managed cluster?
@@ -20,7 +20,7 @@ Ans: E
   D. JDBC data source
   E. Databricks web application
 
-Ans: A
+Ans: A.
 ```
 ```
 3. A data architect is designing a data model that works for both video-based machine learning workloads and highly audited batch ETL/ELT workloads. Which of the following describes how using a data lakehouse can help the data architect meet the needs of both workloads?
@@ -30,7 +30,7 @@ Ans: A
   D. A data lakehouse stores unstructured data and is ACID-compliant.
   E. A data lakehouse fully exists in the cloud.
 
-Ans: 
+Ans: D.
 ```
 ```
 4. Which of the following describes a scenario in which a data engineer will want to use a Job cluster instead of an all-purpose cluster?
@@ -41,7 +41,7 @@ Ans:
   D. A Databricks SQL query needs to be scheduled for upward reporting.
   E. A data engineer needs to manually investigate a production error.
 
-Ans:
+Ans: C.
 ```
 ```
 5. A data engineer has created a Delta table as part of a data pipeline. Downstream data analysts now need SELECT permission on the Delta table. Assuming the data engineer is the Delta table owner, which part of the Databricks Lakehouse Platform can the data engineer use to grant the data analysts the appropriate access?
@@ -52,7 +52,7 @@ Ans:
   D. Databricks Filesystem
   E. Dashboards
 
-Ans:
+Ans: C.
 ```
 ```
 6. Two junior data engineers are authoring separate parts of a single data pipeline notebook. They are working on separate Git branches so they can pair program on the same notebook simultaneously. A senior data engineer experienced in Databricks suggests there is a better alternative for this type of collaboration. Which of the following supports the senior data engineer’s claim?
@@ -63,7 +63,7 @@ Ans:
   D. Databricks Notebooks support the use of multiple languages in the same notebook
   E. Databricks Notebooks support the creation of interactive data visualizations
 
-Ans:
+Ans: B.
 ```
 ```
 7. Which of the following describes how Databricks Repos can help facilitate CI/CD workflows on the Databricks Lakehouse Platform?
@@ -74,7 +74,7 @@ Ans:
   D. Databricks Repos can store the single-source-of-truth Git repository
   E. Databricks Repos can commit or push code changes to trigger a CI/CD process
 
-Ans:
+Ans: E.
 ```
 ```
 8. Which of the following statements describes Delta Lake?
@@ -85,7 +85,7 @@ Ans:
   D. Delta Lake is an open source data storage format for distributed data.
   E. Delta Lake is an open format storage layer that processes data.
 
-Ans:
+Ans: B.
 ```
 ```
 9. A data architect has determined that a table of the following format is necessary:
@@ -122,7 +122,7 @@ Which of the following code blocks uses SQL DDL commands to create an empty Delt
     avgRating FLOAT
     ) USING DELTA
 
-Ans:
+Ans: B.
 ```
 ```
 10. Which of the following SQL keywords can be used to append new rows to an existing Delta table?
@@ -133,7 +133,7 @@ Ans:
   D. DELETE
   E. UNION
 
-Ans:
+Ans: C.
 ```
 ```
 11. A data engineering team needs to query a Delta table to extract rows that all meet the same condition. However, the team has noticed that the query is running slowly. The team has already tuned the size of the data files. Upon investigating, the team has concluded that the rows meeting the condition are sparsely located throughout each of the data files. Based on the scenario, which of the following optimization techniques could speed up the query?
@@ -144,7 +144,7 @@ Ans:
   D. Write as a Parquet file
   E. Tuning the file size
 
-Ans:
+Ans: B.
 ```
 ```
 12. A data engineer needs to create a database called customer360 at the location /customer/customer360. The data engineer is unsure if one of their colleagues has already created the database. Which of the following commands should the data engineer run to complete this task?
