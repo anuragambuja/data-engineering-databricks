@@ -155,7 +155,7 @@ Ans: B.
   D. CREATE DATABASE IF NOT EXISTS customer360 DELTA LOCATION '/customer/customer360';
   E. CREATE DATABASE customer360 DELTA LOCATION '/customer/customer360';
 
-Ans:
+Ans: C.
 ```
 ```
 13. A junior data engineer needs to create a Spark SQL table my_table for which Spark manages both the data and the metadata. The metadata and data should also be stored in the Databricks Filesystem (DBFS). Which of the following commands should a senior data engineer share with the junior data engineer to complete this task?
@@ -166,7 +166,7 @@ Ans:
   D. CREATE TABLE my_table (id STRING, value STRING) USING DBFS;
   E. CREATE TABLE my_table (id STRING, value STRING);
 
-Ans:
+Ans: E.
 ```
 ```
 14. A data engineer wants to create a relational object by pulling data from two tables. The relational object must be used by other data engineers in other sessions. In order to save on storage costs, the data engineer wants to avoid copying and storing physical data. Which of the following relational objects should the data engineer create?
@@ -177,7 +177,7 @@ Ans:
   D. Database
   E. Spark SQL Table
 
-Ans:
+Ans: A.
 ```
 ```
 15. A data engineering team has created a series of tables using Parquet data stored in an external system. The team is noticing that after appending new rows to the data in the external system, their queries within Databricks are not returning the new rows. They identify the caching of the previous data as the cause of this issue. Which of the following approaches will ensure that the data returned by queries is always up-to-date?
@@ -188,7 +188,7 @@ Ans:
   D. The tables should be altered to include metadata to not cache
   E. The tables should be updated before the next query is run
 
-Ans:
+Ans: A.
 ```
 ```
 16. A table customerLocations exists with the following schema:
@@ -196,6 +196,7 @@ Ans:
     date STRING,
     city STRING,
     country STRING
+
   A senior data engineer wants to create a new table from this table using the following command:
     CREATE TABLE customersPerCountry AS
     SELECT country,
@@ -204,13 +205,14 @@ Ans:
     GROUP BY country;
 
   A junior data engineer asks why the schema is not being declared for the new table. Which of the following responses explains why declaring the schema is not necessary?
-  A. CREATE TABLE AS SELECT statements adopt schema details from the source table and query.
-  B. CREATE TABLE AS SELECT statements infer the schema by scanning the data.
-  C. CREATE TABLE AS SELECT statements result in tables where schemas are optional.
-  D. CREATE TABLE AS SELECT statements assign all columns the type STRING.
-  E. CREATE TABLE AS SELECT statements result in tables that do not support schemas.
 
-Ans:
+    A. CREATE TABLE AS SELECT statements adopt schema details from the source table and query.
+    B. CREATE TABLE AS SELECT statements infer the schema by scanning the data.
+    C. CREATE TABLE AS SELECT statements result in tables where schemas are optional.
+    D. CREATE TABLE AS SELECT statements assign all columns the type STRING.
+    E. CREATE TABLE AS SELECT statements result in tables that do not support schemas.
+
+Ans: A.
 ```
 ```
 17. A data engineer is overwriting data in a table by deleting the table and recreating the table. Another data engineer suggests that this is inefficient and the table should simply be overwritten instead. Which of the following reasons to overwrite the table instead of deleting and recreating the table is incorrect?
@@ -221,7 +223,7 @@ Ans:
   D. Overwriting a table is an atomic operation and will not leave the table in an unfinished state.
   E. Overwriting a table allows for concurrent queries to be completed while in progress.
 
-Ans:
+Ans: B.
 ```
 ```
 18. Which of the following commands will return records from an existing Delta table my_table where duplicates have been removed?
@@ -232,7 +234,7 @@ Ans:
   D. MERGE INTO my_table a USING new_records b ON a.id = b.id WHEN NOT MATCHED THEN INSERT *;
   E. MERGE INTO my_table a USING new_records b;
 
-Ans:
+Ans: C.
 ```
 ```
 19. A data engineer wants to horizontally combine two tables as a part of a query. They want to use a shared column as a key column, and they only want the query result to contain rows whose value in the key column is present in both tables. Which of the following SQL commands can they use to accomplish this task?
@@ -243,10 +245,10 @@ Ans:
   D. MERGE
   E. UNION
 
- Ans:
+ Ans: A.
 ```
 ```
-20.  A junior data engineer has ingested a JSON file into a table raw_table with the following schema:
+20. A junior data engineer has ingested a JSON file into a table raw_table with the following schema:
       cart_id STRING,
       items ARRAY<item_id:STRING>
 The junior data engineer would like to unnest the items column in raw_table to result in a new table with the following schema:
@@ -260,16 +262,16 @@ Which of the following commands should the junior data engineer run to complete 
   D. SELECT cart_id, explode(items) AS item_id FROM raw_table;
   E. SELECT cart_id, slice(items) AS item_id FROM raw_table;
   
-Ans:
+Ans: D.
 ```
 ```
 21. A data engineer has ingested a JSON file into a table raw_table with the following schema:
-    transaction_id STRING,
-    payload ARRAY<customer_id:STRING, date:TIMESTAMP, store_id:STRING>
-The data engineer wants to efficiently extract the date of each transaction into a table with the following schema:
-    transaction_id STRING,
-    date TIMESTAMP
-Which of the following commands should the data engineer run to complete this task?
+        transaction_id STRING,
+        payload ARRAY<customer_id:STRING, date:TIMESTAMP, store_id:STRING>
+    The data engineer wants to efficiently extract the date of each transaction into a table with the following schema:
+        transaction_id STRING,
+        date TIMESTAMP
+    Which of the following commands should the data engineer run to complete this task?
 
   A. SELECT transaction_id, explode(payload) FROM raw_table;
   B. SELECT transaction_id, payload.date FROM raw_table;
@@ -277,7 +279,7 @@ Which of the following commands should the data engineer run to complete this ta
   D. SELECT transaction_id, payload[date] FROM raw_table;
   E. SELECT transaction_id, date from payload FROM raw_table;
 
-Ans:
+Ans: B.
 ```
 ```
 22. A data analyst has provided a data engineering team with the following Spark SQL query:
@@ -293,7 +295,7 @@ The data analyst would like the data engineering team to run this query every da
   D. They could replace the string-formatted date in the table with a timestamp-formatted date.
   E. They could pass the table into PySpark and develop a robustly tested module on the existing query.
 
-Ans:
+Ans: A
 ```
 ```
 23. A data engineer has ingested data from an external source into a PySpark DataFrame raw_df. They need to briefly make this data available in SQL for a data analyst to perform a quality assurance check on the data. Which of the following commands should the data engineer run to make this data available in SQL for only the remainder of the Spark session?
@@ -304,7 +306,7 @@ Ans:
   D. raw_df.saveAsTable("raw_df")
   E. There is no way to share data between PySpark and SQL.
 
-Ans:
+Ans: A.
 ```
 ```
 24. A data engineer needs to dynamically create a table name string using three Python variables: region, store, and year. An example of a table name is below when region = "nyc", store = "100", and year = "2021": nyc100_sales_2021
@@ -316,7 +318,7 @@ Which of the following commands should the data engineer use to construct the ta
   D. f"{region}{store}_sales_{year}"
   E. {region}+{store}+"_sales_"+{year}
 
-Ans:
+Ans: D.
 ```
 ```
 25. A data engineer has developed a code block to perform a streaming read on a data source. The code block is below:
@@ -335,7 +337,7 @@ The code block is returning an error. Which of the following changes should be m
   D. A new .stream line should be added after the spark line.
   E. A new .stream line should be added after the .load(dataSource) line.
 
-Ans:
+Ans: A.
 ```
 ```
 26. A data engineer has configured a Structured Streaming job to read from a table, manipulate the data, and then perform a streaming write into a new table. The code block used by the data engineer is below:
@@ -355,7 +357,7 @@ If the data engineer only wants the query to execute a single micro-batch to pro
   D. trigger(processingTime="once")
   E. processingTime(1)
 
-Ans:
+Ans: A.
 ```
 ```
 27. A data engineer is designing a data pipeline. The source system generates files in a shared directory that is also used by other processes. As a result, the files should be kept as is and will accumulate in the directory. The data engineer needs to identify which files are new since the previous run in the pipeline, and set up the pipeline to only ingest those new files with each run. Which of the following tools can the data engineer use to solve this problem?
@@ -366,12 +368,10 @@ Ans:
   D. Data Explorer
   E. Auto Loader
 
-Ans:
+Ans: E.
 ```
 ```
-28. A data engineering team is in the process of converting their existing data pipeline to utilize Auto Loader for incremental processing in the ingestion of JSON files. One data engineer
-comes across the following code block in the Auto Loader documentation:
-
+28. A data engineering team is in the process of converting their existing data pipeline to utilize Auto Loader for incremental processing in the ingestion of JSON files. One data engineer comes across the following code block in the Auto Loader documentation:
       (streaming_df = spark.readStream.format("cloudFiles")
       .option("cloudFiles.format", "json")
       .option("cloudFiles.schemaLocation", schemaLocation)
@@ -384,7 +384,7 @@ Assuming that schemaLocation and sourcePath have been set correctly, which of th
   D. The data engineer needs to add the .autoLoader line before the .load(sourcePath) line.
   E. There is no change required. The data engineer needs to ask their administrator to turn on Auto Loader.
   
-Ans:
+Ans: C.
 ```
 ```
 29. Which of the following data workloads will utilize a Bronze table as its source?
@@ -395,7 +395,7 @@ Ans:
   D. A job that develops a feature set for a machine learning application
   E. A job that enriches data by parsing its timestamps into a human-readable format
 
-Ans:
+Ans: E.
 ```
 ```
 30. Which of the following data workloads will utilize a Silver table as its source?
@@ -406,7 +406,7 @@ Ans:
   D. A job that aggregates cleaned data to create standard summary statistics
   E. A job that cleans data by removing malformatted records
   
-Ans:
+Ans: D.
 ```
 ```
 31. Which of the following Structured Streaming queries is performing a hop from a Bronze table to a Silver table?
@@ -447,7 +447,7 @@ Ans:
         .table("uncleanedSales")
       )
 
-Ans:
+Ans: C.
 ```
 ```
 32. Which of the following benefits does Delta Live Tables provide for ELT pipelines over standard data pipelines that utilize Spark and Delta Lake on Databricks?
@@ -458,7 +458,7 @@ Ans:
   D. The ability to automatically scale compute resources
   E. The ability to perform batch and streaming queries
 
-Ans:
+Ans: A.
 ```
 ```
 33. A data engineer has three notebooks in an ELT pipeline. The notebooks need to be executed in a specific order for the pipeline to complete successfully. The data engineer would like to use Delta Live Tables to manage this process. Which of the following steps must the data engineer take as part of implementing this pipeline using Delta Live Tables?
@@ -469,7 +469,7 @@ Ans:
   D. They need to refactor their notebook to use Python and the dlt library.
   E. They need to refactor their notebook to use SQL and CREATE LIVE TABLE keyword.
 
-Ans:
+Ans: B.
 ```
 ```
 34. A data engineer has written the following query:
@@ -478,12 +478,12 @@ Ans:
 The data engineer asks a colleague for help to convert this query for use in a Delta Live Tables (DLT) pipeline. The query should create the first table in the DLT pipeline. Which of the following describes the change the colleague needs to make to the query?
 
   A. They need to add a COMMENT line at the beginning of the query.
-  B. They need to add a CREATE LIVE TABLE table_name AS line at the beginning of   the query.
+  B. They need to add a CREATE LIVE TABLE table_name AS line at the beginning of the query.
   C. They need to add a live. prefix prior to json. in the FROM line.
   D. They need to add a CREATE DELTA LIVE TABLE table_name AS line at the beginning of the query.
   E. They need to add the cloud_files(...) wrapper to the JSON file path.
 
-Ans:
+Ans: B.
 ```
 ```
 35. A dataset has been defined using Delta Live Tables and includes an expectations clause:
@@ -496,7 +496,7 @@ What is the expected behavior when a batch of data containing data that violates
   D. Records that violate the expectation are added to the target dataset and flagged as invalid in a field added to the target dataset.
   E. Records that violate the expectation are dropped from the target dataset and loaded into a quarantine table.
 
-Ans:
+Ans: A.
 ```
 ```
 36. A Delta Live Table pipeline includes two datasets defined using STREAMING LIVE TABLE. Three datasets are defined against Delta Lake table sources using LIVE TABLE. The table is configured to run in Development mode using the Triggered Pipeline Mode. Assuming previously unprocessed data exists and all definitions are valid, what is the expected outcome after clicking Start to update the pipeline?
@@ -506,7 +506,7 @@ Ans:
   D. All datasets will be updated once and the pipeline will shut down. The compute resources will persist to allow for additional testing.
   E. All datasets will be updated continuously and the pipeline will not shut down. The compute resources will persist with the pipeline.
 
-Ans:
+Ans: D.
 ```
 ```
 37. A data engineer has a Job with multiple tasks that runs nightly. One of the tasks unexpectedly fails during 10 percent of the runs. Which of the following actions can the data engineer perform to ensure the Job completes each night while minimizing compute costs?
@@ -517,7 +517,7 @@ Ans:
   D. They can institute a retry policy for the task that periodically fails
   E. They can utilize a Jobs cluster for each of the tasks in the Job
 
-Ans:
+Ans: D.
 ```
 ```
 38. A data engineer has set up two Jobs that each run nightly. The first Job starts at 12:00 AM, and it usually completes in about 20 minutes. The second Job depends on the first Job, and it starts at 12:30 AM. Sometimes, the second Job fails when the first Job does not complete by 12:30 AM. Which of the following approaches can the data engineer use to avoid this problem?
@@ -528,7 +528,7 @@ Ans:
   D. They can limit the size of the output in the second Job so that it will not fail as easily
   E. They can set up the data to stream from the first Job to the second Job
     
-Ans:
+Ans: A.
 ```
 ```
 39. A data engineer has set up a notebook to automatically process using a Job. The data engineer’s manager wants to version control the schedule due to its complexity. Which of the following approaches can the data engineer use to obtain a version-controllable configuration of the Job’s schedule?
@@ -539,7 +539,7 @@ Ans:
   D. They can submit the Job once on an all-purpose cluster.
   E. They can download the XML description of the Job from the Job’s page.
 
-Ans:
+Ans: C.
 ```
 ```
 40. A data analyst has noticed that their Databricks SQL queries are running too slowly. They claim that this issue is affecting all of their sequentially run queries. They ask the data engineering team for help. The data engineering team notices that each of the queries uses the same SQL endpoint, but the SQL endpoint is not used by any other user. Which of the following approaches can the data engineering team use to improve the latency of the data analyst’s queries?
@@ -550,7 +550,7 @@ Ans:
   D. They can turn on the Auto Stop feature for the SQL endpoint.
   E. They can turn on the Serverless feature for the SQL endpoint and change the Spot Instance Policy to “Reliability Optimized.”
 
-Ans:
+Ans: C.
 ```
 ```
 41. An engineering manager uses a Databricks SQL query to monitor their team’s progress on fixes related to customer-reported bugs. The manager checks the results of the query every day, but they are manually rerunning the query each day and waiting for the results. Which of the following approaches can the manager use to ensure the results of the query are updated each day?
@@ -561,7 +561,7 @@ Ans:
   D. They can schedule the query to refresh every 1 day from the SQL endpoint’s page in Databricks SQL.
   E. They can schedule the query to refresh every 12 hours from the SQL endpoint’s page in Databricks SQL.
 
-Ans:
+Ans: B.
 ```
 ```
 42. A data engineering team has been using a Databricks SQL query to monitor the performance of an ELT job. The ELT job is triggered by a specific number of input records being ready to process. The Databricks SQL query returns the number of minutes since the job’s most recent runtime. Which of the following approaches can enable the data engineering team to be notified if the ELT job has not been run in an hour?
@@ -572,7 +572,7 @@ Ans:
   D. They can set up an Alert for the query to notify them if the returned value is greater than 60.
   E. This type of alerting is not possible in Databricks.
 
-Ans:
+Ans: D.
 ```
 ```
 43. A data engineering manager has noticed that each of the queries in a Databricks SQL dashboard takes a few minutes to update when they manually click the “Refresh” button. They are curious why this might be occurring, so a team member provides a variety of reasons on why the delay might be occurring. Which of the following reasons fails to explain why the dashboard might be taking a few minutes to update?
@@ -583,7 +583,7 @@ Ans:
   D. The Job associated with updating the dashboard might be using a non-pooled endpoint.
   E. The queries attached to the dashboard might all be connected to their own, unstarted Databricks clusters.
 
-Ans:
+Ans: D.
 ```
 ```
 44. A new data engineer has started at a company. The data engineer has recently been added to the company’s Databricks workspace as new.engineer@company.com. The data engineer needs to be able to query the table sales in the database retail. The new data engineer already has been granted USAGE on the database retail. Which of the following commands can be used to grant the appropriate permissions to the new data engineer?
@@ -594,7 +594,7 @@ Ans:
   D. GRANT USAGE ON TABLE new.engineer@company.com TO sales;
   E. GRANT SELECT ON TABLE new.engineer@company.com TO sales;
 
-Ans:
+Ans: C.
 ```
 ```
 45. A new data engineer new.engineer@company.com has been assigned to an ELT project. The new data engineer will need full privileges on the table sales to fully manage the project. Which of the following commands can be used to grant full permissions on the table to the new data engineer?
@@ -605,7 +605,7 @@ Ans:
   D. GRANT SELECT ON TABLE sales TO new.engineer@company.com;
   E. GRANT SELECT CREATE MODIFY ON TABLE sales TO new.engineer@company.com;
 
-Ans:
+Ans: A.
 ```
 
 
