@@ -607,12 +607,417 @@ Ans: C.
 
 Ans: A.
 ```
+```
+46. Which of the following commands can a data engineer use to compact small data files of a Delta table into larger ones ?
+
+  A. PARTITION BY
+  B. ZORDER BY
+  C. COMPACT
+  D. VACUUM
+  E. OPTIMIZE
+
+Ans: E.
+Delta Lake can improve the speed of read queries from a table. One way to improve this speed is by compacting small files into larger ones. You trigger compaction by running the OPTIMIZE command
+Reference: https://docs.databricks.com/sql/language-manual/delta-optimize.html
+```
+```
+47. A data engineer is trying to use Delta time travel to rollback a table to a previous version, but the data engineer received an error that the data files are no longer present. Which of the following commands was run on the table that caused deleting the data files?
+
+  A. VACUUM
+  B. OPTIMIZE
+  C. ZORDER BY
+  D. DEEP CLONE
+  E. DELETE
+
+Ans: A.
+Running the VACUUM command on a Delta table deletes the unused data files older than a specified data retention period. As a result, you lose the ability to time travel back to any version older than that retention threshold.
+Reference: https://docs.databricks.com/sql/language-manual/delta-vacuum.html
+```
+```
+48. In Delta Lake tables, which of the following is the primary format for the data files?
+
+  A. Delta
+  B. Parquet
+  C. JSON
+  D. Hive-specific format
+  E. Both, Parquet and JSON
+
+Ans: B.
+Delta Lake builds upon standard data formats. Delta lake table gets stored on the storage in one or more data files in Parquet format, along with transaction logs in JSON format.
+Reference: https://docs.databricks.com/delta/index.html
+```
+```
+49. Which of the following locations hosts the Databricks web application ?
+
+  A. Data plane
+  B. Control plane
+  C. Databricks Filesystem
+  D. Databricks-managed cluster
+  E. Customer Cloud Account
+
+Ans: B.
+According to the Databricks Lakehouse architecture, Databricks workspace is deployed in the control plane along with Databricks services like Databricks web application (UI), Cluster manager, workflow service, and notebooks.
+Reference: https://docs.databricks.com/getting-started/overview.html
+```
+```
+50. In Databricks Repos (Git folders), which of the following operations a data engineer can use to update the local version of a repo from its remote Git repository ?
+
+  A. Clone
+  B. Commit
+  C. Merge
+  D. Push
+  E. Pull
+
+Ans: E.
+The git Pull operation is used to fetch and download content from a remote repository and immediately update the local repository to match that content.
+References:
+https://docs.databricks.com/repos/index.html
+https://github.com/git-guides/git-pull
+```
+```
+51. According to the Databricks Lakehouse architecture, which of the following is located in the customer's cloud account?
+
+  A. Databricks web application
+  B. Notebooks
+  C. Repos
+  D. Cluster virtual machines
+  E. Workflows
+
+Ans: D.
+When the customer sets up a Spark cluster, the cluster virtual machines are deployed in the data plane in the customer's cloud account.
+Reference: https://docs.databricks.com/getting-started/overview.html
+```
+```
+52. Which of the following best describes Databricks Lakehouse?
+
+  A. Single, flexible, high-performance system that supports data, analytics, and machine learning workloads.
+  B. Reliable data management system with transactional guarantees for organization’s structured data.
+  C. Platform that helps reduce the costs of storing organization’s open-format data files in the cloud.
+  D. Platform for developing increasingly complex machine learning workloads using a simple, SQL-based solution.
+  E. Platform that scales data lake workloads for organizations without investing on-premises hardware.
+
+Ans: A.
+Databricks Lakehouse is a unified analytics platform that combines the best elements of data lakes and data warehouses. So, in the Lakehouse, you can work on data engineering, analytics, and AI, all in one platform.
+Reference: https://www.databricks.com/glossary/data-lakehouse
+```
+```
+53. If ​​the default notebook language is SQL, which of the following options a data engineer can use to run a Python code in this SQL Notebook ?
+
+  A. They need first to import the python module in a cell
+  B. This is not possible! They need to change the default language of the notebook to Python
+  C. Databricks detects cells language automatically, so they can write Python syntax in any cell
+  D. They can add %language magic command at the start of a cell to force language detection.
+  E. They can add %python at the start of a cell.
+
+Ans:  E.
+By default, cells use the default language of the notebook. You can override the default language in a cell by using the language magic command at the beginning of a cell. The supported magic commands are: %python, %sql, %scala, and %r.
+Reference: https://docs.databricks.com/notebooks/notebooks-code.html
+```
+```
+54. Which of the following tasks is not supported by Databricks Repos (Git folders), and must be performed in your Git provider ?
+
+  A. Clone, push to, or pull from a remote Git repository.
+  B. Create and manage branches for development work.
+  C. Create notebooks, and edit notebooks and other files.
+  D. Visually compare differences upon commit.
+  E. Delete branches
+
+Ans: E.
+The following tasks are not supported by Databricks Repos, and must be performed in your Git provider:
+create a pull request
+Delete branches
+Merge and rebase branches *
+* NOTE: Recently, merge and rebase branches have become supported in Databricks Repos. However, this may still not be updated in the current exam version.
+```
+```
+55. Which of the following statements is Not true about Delta Lake ?
+
+  A. Delta Lake provides ACID transaction guarantees
+  B. Delta Lake provides scalable data and metadata handling
+  C. Delta Lake provides audit history and time travel
+  D. Delta Lake builds upon standard data formats: Parquet + XML
+  E. Delta Lake supports unified streaming and batch data processing
+
+Ans: D.
+It is not true that Delta Lake builds upon XML format. It builds upon Parquet and JSON formats
+Reference: https://docs.databricks.com/delta/index.html
+```
+```
+56. How long is the default retention period of the VACUUM command ?
+
+  A. 0 days
+  B. 7 days
+  C. 30 days
+  D. 90 days
+  E. 365 days
+
+Ans: B.
+By default, the retention threshold of the VACUUM command is 7 days. This means that VACUUM operation will prevent you from deleting files less than 7 days old, just to ensure that no long-running operations are still referencing any of the files to be deleted.
+Reference: https://docs.databricks.com/sql/language-manual/delta-vacuum.html
+```
+```
+57. The data engineering team has a Delta table called employees that contains the employees personal information including their gross salaries. Which of the following code blocks will keep in the table only the employees having a salary greater than 3000 ?
+
+  A. DELETE FROM employees WHERE salary > 3000;
+  B. SELECT CASE WHEN salary <= 3000 THEN DELETE ELSE UPDATE END FROM employees;
+  C. UPDATE employees WHERE salary > 3000 WHEN MATCHED SELECT;
+  D. UPDATE employees WHERE salary <= 3000 WHEN MATCHED DELETE;
+  E. DELETE FROM employees WHERE salary <= 3000;
+
+Ans: E.
+In order to keep only the employees having a salary greater than 3000, we must delete the employees having salary less than or equal 3000. To do so, use the DELETE statement:
+DELETE FROM table_name WHERE condition;
+Reference: https://docs.databricks.com/sql/language-manual/delta-delete-from.html
+```
+```
+58. A data engineer wants to create a relational object by pulling data from two tables. The relational object must be used by other data engineers in other sessions on the same cluster only. In order to save on storage costs, the date engineer wants to avoid copying and storing physical data. Which of the following relational objects should the data engineer create?
+
+  A. Temporary view
+  B. External table
+  C. Managed table
+  D. Global Temporary view
+  E. View
+
+Ans: D.
+In order to avoid copying and storing physical data, the data engineer must create a view object. A view in databricks is a virtual table that has no physical data. It’s just a saved SQL query against actual tables.
+The view type should be Global Temporary view that can be accessed in other sessions on the same cluster. Global Temporary views are tied to a cluster temporary database called global_temp.
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-view.html
+```
+```
+59. A data engineer has developed a code block to completely reprocess data based on the following if-condition in Python:
+    if process_mode = "init" and not is_table_exist:
+       print("Start processing ...")
+This if-condition is returning an invalid syntax error. Which of the following changes should be made to the code block to fix this error ?
+
+    A. if process_mode = "init" & not is_table_exist:
+          print("Start processing ...")
+    B. if process_mode = "init" and not is_table_exist = True:
+          print("Start processing ...")
+    C. if process_mode = "init" and is_table_exist = False:
+          print("Start processing ...")
+    D. if (process_mode = "init") and (not is_table_exist):
+          print("Start processing ...")
+    E. if process_mode == "init" and not is_table_exist:
+          print("Start processing ...")
+
+Ans: E.
+Python if statement looks like this in its simplest form:
+if <expr>:
+    <statement>
+Python supports the usual logical conditions from mathematics:
+  Equals: a == b
+  Not Equals: a != b
+  <, <=, >, >=
+To combine conditional statements, you can use the following logical operators:
+  - and
+  - or
+The negation operator in Python is: not
+Reference: https://www.w3schools.com/python/python_conditions.asp
+```
+```
+60. Fill in the below blank to successfully create a table in Databricks using data from an existing PostgreSQL database:
+      CREATE TABLE employees
+        USING ____________
+        OPTIONS (
+          url "jdbc:postgresql:dbserver",
+          dbtable "employees"
+        )
+
+  A. org.apache.spark.sql.jdbc
+  B. postgresql
+  C. DELTA
+  D. dbserver
+  E. cloudfiles
+
+Ans: A.
+Using the JDBC library, Spark SQL can extract data from any existing relational database that supports JDBC. Examples include mysql, postgres, SQLite, and more.
+Reference: https://learn.microsoft.com/en-us/azure/databricks/external-data/jdbc
+```
+```
+61. Which of the following commands can a data engineer use to create a new table along with a comment ?
+
+    A. CREATE TABLE payments
+        COMMENT "This table contains sensitive information"
+        AS SELECT * FROM bank_transactions
+    B. CREATE TABLE payments
+        COMMENT("This table contains sensitive information")
+        AS SELECT * FROM bank_transactions
+    C. CREATE TABLE payments
+        AS SELECT * FROM bank_transactions
+        COMMENT "This table contains sensitive information"
+    D. CREATE TABLE payments
+        AS SELECT * FROM bank_transactions
+        COMMENT("This table contains sensitive information")
+    E. COMMENT("This table contains sensitive information")
+        CREATE TABLE payments
+        AS SELECT * FROM bank_transactions
+
+Ans: A.
+The CREATE TABLE clause supports adding a descriptive comment for the table. This allows for easier discovery of table contents.
+Syntax:
+    CREATE TABLE table_name
+    COMMENT "here is a comment"
+    AS query
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-table-using.html
+```
+```
+62. A junior data engineer usually uses INSERT INTO command to write data into a Delta table. A senior data engineer suggested using another command that avoids writing of duplicate records. Which of the following commands is the one suggested by the senior data engineer ?
+
+  A. MERGE INTO
+  B. APPLY CHANGES INTO
+  C. UPDATE
+  D. COPY INTO
+  E. INSERT OR OVERWRITE
+
+Ans: A.
+MERGE INTO allows to merge a set of updates, insertions, and deletions based on a source table into a target Delta table. With MERGE INTO, you can avoid inserting the duplicate records when writing into Delta tables.
+References:
+ttps://docs.databricks.com/sql/language-manual/delta-merge-into.html
+https://docs.databricks.com/delta/merge.html#data-deduplication-when-writing-into-delta-tables
+```
+```
+63. A data engineer is designing a Delta Live Tables pipeline. The source system generates files containing changes captured in the source data. Each change event has metadata indicating whether the specified record was inserted, updated, or deleted. In addition to a timestamp column indicating the order in which the changes happened. The data engineer needs to update a target table based on these change events. Which of the following commands can the data engineer use to best solve this problem?
+
+  A. MERGE INTO
+  B. APPLY CHANGES INTO
+  C. UPDATE
+  D. COPY INTO
+  E. cloud_files
+
+Ans: B.
+The events described in the question represent Change Data Capture (CDC) feed. CDC is logged at the source as events that contain both the data of the records along with metadata information:
+    1. Operation column indicating whether the specified record was inserted, updated, or deleted
+    2. Sequence column that is usually a timestamp indicating the order in which the changes happened
+You can use the APPLY CHANGES INTO statement to use Delta Live Tables CDC functionality
+Reference: https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-cdc.html
+```
+```
+64. In PySpark, which of the following commands can you use to query the Delta table employees created in Spark SQL?
+
+    A. pyspark.sql.read(SELECT * FROM employees)
+    B. spark.sql("employees")
+    C. spark.format(“sql”).read("employees")
+    D. spark.table("employees")
+    E. Spark SQL tables can not be accessed from PySpark
+
+Ans: D.
+spark.table() function returns the specified Spark SQL table as a PySpark DataFrame
+Reference: https://spark.apache.org/docs/2.4.0/api/python/_modules/pyspark/sql/session.html#SparkSession.table
+```
+```
+65. Which of the following code blocks can a data engineer use to create a user defined function (UDF) ?
+
+  A. CREATE FUNCTION plus_one(value INTEGER)
+      RETURN value +1
+  B. CREATE UDF plus_one(value INTEGER)
+      RETURNS INTEGER
+      RETURN value +1;
+  C. CREATE UDF plus_one(value INTEGER)
+      RETURN value +1;
+  D. CREATE FUNCTION plus_one(value INTEGER)
+      RETURNS INTEGER
+      RETURN value +1;
+  E. CREATE FUNCTION plus_one(value INTEGER)
+      RETURNS INTEGER
+      value +1;
+
+Ans: D.
+The correct syntax to create a UDF is:
+    CREATE [OR REPLACE] FUNCTION function_name ( [ parameter_name data_type [, ...] ] )
+    RETURNS data_type
+    RETURN { expression | query }
+Reference: https://docs.databricks.com/udf/index.html
+```
+```
+66. When dropping a Delta table, which of the following explains why only the table's metadata will be deleted, while the data files will be kept in the storage ?
+
+  A. The table is deep cloned
+  B. The table is external
+  C. The user running the command has no permission to delete the data files
+  D. The table is managed
+  E. Delta prevents deleting files less than retention threshold, just to ensure that no long-running operations are still referencing any of the files to be deleted
+
+Ans: B.
+External (unmanaged) tables are tables whose data is stored in an external storage path by using a LOCATION clause.
+When you run DROP TABLE on an external table, only the table's metadata is deleted, while the underlying data files are kept.
+Reference: https://docs.databricks.com/lakehouse/data-objects.html#what-is-an-unmanaged-table
+```
+```
+67. Given the two tables students_course_1 and students_course_2. Which of the following commands can a data engineer use to get all the students from the above two tables without duplicate records ?
+
+      A. SELECT * FROM students_course_1
+          CROSS JOIN
+          SELECT * FROM students_course_2
+      B. SELECT * FROM students_course_1
+          UNION
+          SELECT * FROM students_course_2
+      C. SELECT * FROM students_course_1
+          INTERSECT
+          SELECT * FROM students_course_2
+      D. SELECT * FROM students_course_1
+        OUTER JOIN
+        SELECT * FROM students_course_2
+      E. SELECT * FROM students_course_1
+          INNER JOIN
+          SELECT * FROM students_course_2
+
+Ans: B.
+With UNION, you can return the result of subquery1 plus the rows of subquery2
+Syntax:
+    subquery1
+    UNION [ ALL | DISTINCT ]
+    subquery2
+If ALL is specified duplicate rows are preserved.
+If DISTINCT is specified the result does not contain any duplicate rows. This is the default.
+Note that both subqueries must have the same number of columns and share a least common type for each respective column.
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-qry-select-setops.html
+```
+```
+68. Given the following command:
+    CREATE DATABASE IF NOT EXISTS hr_db ;
+In which of the following locations will the hr_db database be located?
+
+  A. dbfs:/user/hive/warehouse
+  B. dbfs:/user/hive/db_hr
+  C. dbfs:/user/hive/databases/db_hr.db
+  D. dbfs:/user/hive/databases
+  E. dbfs:/user/hive
+
+Ans: A.
+Since we are creating the database here without specifying a LOCATION clause, the database will be created in the default warehouse directory under dbfs:/user/hive/warehouse
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-schema.html
+```
+```
+69. Given the following table faculties
+
+    ![image](https://github.com/user-attachments/assets/cfcc48b3-ef69-435f-a981-cdeb2dbbf554)
+
+Fill in the below blank to get the students enrolled in less than 3 courses from the array column students
+    SELECT
+      faculty_id,
+      students,
+      ___________ AS few_courses_students
+    FROM faculties
 
 
+  A. TRANSFORM (students, total_courses < 3)
+  B. TRANSFORM (students, i -> i.total_courses < 3)
+  C. FILTER (students, total_courses < 3)
+  D. FILTER (students, i -> i.total_courses < 3)
+  E. CASE WHEN students.total_courses < 3 THEN students
+      ELSE NULL
+      END
 
-
-
-
+Ans: D.
+filter(input_array, lamda_function) is a higher order function that returns an output array from an input array by extracting elements for which the predicate of a lambda function holds.
+Example:
+  Extracting odd numbers from an input array of integers:
+  SELECT filter(array(1, 2, 3, 4), i -> i % 2 == 1);
+  output: [1, 3]
+References:
+https://docs.databricks.com/sql/language-manual/functions/filter.html
+https://docs.databricks.com/optimizations/higher-order-lambda-functions.html
+```
 
 
 
