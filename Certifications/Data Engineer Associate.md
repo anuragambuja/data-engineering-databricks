@@ -987,11 +987,11 @@ Ans: A.
 Since we are creating the database here without specifying a LOCATION clause, the database will be created in the default warehouse directory under dbfs:/user/hive/warehouse
 Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-schema.html
 ```
+`69. Given the following table faculties`
+
+  ![image](https://github.com/user-attachments/assets/cfcc48b3-ef69-435f-a981-cdeb2dbbf554)
+
 ```
-69. Given the following table faculties
-
-    ![image](https://github.com/user-attachments/assets/cfcc48b3-ef69-435f-a981-cdeb2dbbf554)
-
 Fill in the below blank to get the students enrolled in less than 3 courses from the array column students
     SELECT
       faculty_id,
@@ -1018,12 +1018,363 @@ References:
 https://docs.databricks.com/sql/language-manual/functions/filter.html
 https://docs.databricks.com/optimizations/higher-order-lambda-functions.html
 ```
+```
+70. Given the following Structured Streaming query:
+      (spark.table("orders")
+              .withColumn("total_after_tax", col("total")+col("tax"))
+          .writeStream
+              .option("checkpointLocation", checkpointPath)
+              .outputMode("append")
+               .______________ 
+              .table("new_orders")
+      )
+
+Fill in the blank to make the query executes a micro-batch to process data every 2 minutes
+
+    A. trigger(once=”2 minutes”) 
+    B. trigger(processingTime=”2 minutes")
+    C. processingTime(”2 minutes") 
+    D. trigger(”2 minutes")
+    E. trigger()
+
+Ans: B.
+In Spark Structured Streaming, in order to process data in micro-batches at the user-specified intervals, you can use processingTime keyword. It allows to specify a time duration as a string.
+Reference: https://docs.databricks.com/structured-streaming/triggers.html#configure-structured-streaming-trigger-intervals
+```
+```
+71. Which of the following is used by Auto Loader to load data incrementally?
+
+    A. DEEP CLONE
+    B. Multi-hop architecture
+    C. COPY INTO
+    D. Spark Structured Streaming
+    E. Databricks SQL
+
+Ans: D.
+Auto Loader is based on Spark Structured Streaming. It provides a Structured Streaming source called cloudFiles.
+Reference: https://docs.databricks.com/ingestion/auto-loader/index.html
+```
+```
+72. Which of the following statements best describes Auto Loader ?
+
+    A. Auto loader allows applying Change Data Capture (CDC) feed to update tables based on changes captured in source data.
+    B. Auto loader monitors a source location, in which files accumulate, to identify and ingest only new arriving files with each command run. While the files that have already been ingested in previous runs are skipped.
+    C. Auto loader allows cloning a source Delta table to a target destination at a specific version.
+    D. Auto loader defines data quality expectations on the contents of a dataset, and reports the records that violate these expectations in metrics.
+    E. Auto loader enables efficient insert, update, deletes, and rollback capabilities by adding a storage layer that provides better data reliability to data lakes.
+
+Ans: B.
+Auto Loader incrementally and efficiently processes new data files as they arrive in cloud storage.
+Reference: https://docs.databricks.com/ingestion/auto-loader/index.html
+```
+```
+73. A data engineer has defined the following data quality constraint in a Delta Live Tables pipeline:
+    CONSTRAINT valid_id EXPECT (id IS NOT NULL) _____________
+Fill in the above blank so records violating this constraint will be added to the target table, and reported in metrics
+
+    A. ON VIOLATION ADD ROW
+    B. ON VIOLATION FAIL UPDATE
+    C. ON VIOLATION SUCCESS UPDATE
+    D. ON VIOLATION NULL
+    E. There is no need to add ON VIOLATION clause. By default, records violating the constraint will be kept, and reported as invalid in the event log
+
+Ans: E. 
+By default, records that violate the expectation are added to the target dataset along with valid records, but violations will be reported in the event log
+Reference: https://learn.microsoft.com/en-us/azure/databricks/workflows/delta-live-tables/delta-live-tables-expectations
+```
+```
+74. The data engineer team has a DLT pipeline that updates all the tables once and then stops. The compute resources of the pipeline continue running to allow for quick testing. Which of the following best describes the execution modes of this DLT pipeline ?
+
+  A. The DLT pipeline executes in Continuous Pipeline mode under Production mode.
+  B. The DLT pipeline executes in Continuous Pipeline mode under Development mode.
+  C. The DLT pipeline executes in Triggered Pipeline mode under Production mode.
+  D. The DLT pipeline executes in Triggered Pipeline mode under Development mode.
+  E. More information is needed to determine the correct response
+
+Ans: D.
+Triggered pipelines update each table with whatever data is currently available and then they shut down. In Development mode, the Delta Live Tables system ease the development process by
+  - Reusing a cluster to avoid the overhead of restarts. The cluster runs for two hours when development mode is enabled.
+  - Disabling pipeline retries so you can immediately detect and fix errors.
+Reference: https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-concepts.html
+```
+```
+75. Which of the following will utilize Gold tables as their source?
+
+  A. Silver tables
+  B. Auto loader
+  C. Bronze tables
+  D. Dashboards
+  E. Streaming jobs
+
+Ans: D.
+Gold tables provide business level aggregates often used for reporting and dashboarding, or even for Machine learning
+Reference: https://www.databricks.com/glossary/medallion-architecture
+```
+```
+76. Which of the following code blocks can a data engineer use to query the existing streaming table events ?
+
+  A. spark.readStream("events")
+  B. spark.read.table("events")
+  C. spark.readStream.table("events")
+  D. spark.readStream().table("events")
+  E. spark.stream.read("events")
+
+Ans: C.
+Delta Lake is deeply integrated with Spark Structured Streaming. You can load tables as a stream using:
+    spark.readStream.table(table_name)
+Reference: https://docs.databricks.com/structured-streaming/delta-lake.html
+```
+```
+77. In multi-hop architecture, which of the following statements best describes the Bronze layer ?
+
+  A. It maintains data that powers analytics, machine learning, and production applications
+  B. It maintains raw data ingested from various sources
+  C. It represents a filtered, cleaned, and enriched version of data
+  D. It provides business-level aggregated version of data
+  E. It provides a more refined view of the data.
+
+Ans: B.
+Bronze tables contain data in its rawest format ingested from various sources (e.g., JSON files, Operational Databaes, Kakfa stream, ...)
+Reference: https://www.databricks.com/glossary/medallion-architecture
+```
+```
+78. Given the following Structured Streaming query
+        (spark.readStream
+                .format("cloudFiles")
+                .option("cloudFiles.format", "json")
+                .load(ordersLocation)
+             .writeStream
+                .option("checkpointLocation", checkpointPath)
+                .table("uncleanedOrders")
+        )
+Which of the following best describe the purpose of this query in a multi-hop architecture?
+
+  A. The query is performing raw data ingestion into a Bronze table
+  B. The query is performing a hop from a Bronze table to a Silver table
+  C. The query is performing a hop from Silver table to a Gold table
+  D. The query is performing data transfer from a Gold table into a production application
+  E. This query is performing data quality controls prior to Silver layer
+
+Ans: A.
+The query here is using Autoloader (cloudFiles) to load raw json data from ordersLocation into the Bronze table uncleanedOrders
+References:
+https://www.databricks.com/glossary/medallion-architecture
+https://docs.databricks.com/ingestion/auto-loader/index.html
+```
+```
+79. A data engineer has the following query in a Delta Live Tables pipeline:
+      CREATE LIVE TABLE aggregated_sales
+      AS
+        SELECT store_id, sum(total)
+        FROM cleaned_sales
+        GROUP BY store_id
+The pipeline is failing to start due to an error in this query. Which of the following changes should be made to this query to successfully start the DLT pipeline ?
+
+  A. CREATE STREAMING TABLE aggregated_sales
+      AS
+      SELECT store_id, sum(total)
+      FROM LIVE.cleaned_sales
+      GROUP BY store_id
+  B. CREATE TABLE aggregated_sales
+      AS
+      SELECT store_id, sum(total)
+      FROM LIVE.cleaned_sales
+      GROUP BY store_id
+   C. CREATE LIVE TABLE aggregated_sales
+        AS
+        SELECT store_id, sum(total)
+        FROM LIVE.cleaned_sales
+        GROUP BY store_id
+   D. CREATE STREAMING LIVE TABLE aggregated_sales
+       AS
+       SELECT store_id, sum(total)
+       FROM cleaned_sales
+       GROUP BY store_id
+   E. CREATE STREAMING LIVE TABLE aggregated_sales
+        AS
+        SELECT store_id, sum(total)
+        FROM STREAM(cleaned_sales)
+        GROUP BY store_id
+
+Ans: C.
+In DLT pipelines, we use the CREATE LIVE TABLE syntax to create a table with SQL. To query another live table, prepend the LIVE. keyword to the table name.
+    CREATE LIVE TABLE aggregated_sales
+    AS
+    SELECT store_id, sum(total)
+    FROM LIVE.cleaned_sales
+    GROUP BY store_id
+Reference: https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-sql-ref.html
+```
+```
+80. A data engineer has defined the following data quality constraint in a Delta Live Tables pipeline:
+        CONSTRAINT valid_id EXPECT (id IS NOT NULL) _____________
+Fill in the above blank so records violating this constraint will be dropped, and reported in metrics
+
+    A. ON VIOLATION DROP ROW
+    B. ON VIOLATION FAIL UPDATE
+    C. ON VIOLATION DELETE ROW
+    D. ON VIOLATION DISCARD ROW
+    E. There is no need to add ON VIOLATION clause. By default, records violating the constraint will be discarded, and reported as invalid in the event log
+
+Ans: A.
+With ON VIOLATION DROP ROW, records that violate the expectation are dropped, and violations are reported in the event log
+Reference: https://learn.microsoft.com/en-us/azure/databricks/workflows/delta-live-tables/delta-live-tables-expectations
+```
+```
+81. Which of the following compute resources is available in Databricks SQL ?
+
+    A. Single-node clusters
+    B. Multi-nodes clusters
+    C. On-premises clusters
+    D. SQL warehouses
+    E. SQL engines
+
+Ans: D.
+Compute resources are infrastructure resources that provide processing capabilities in the cloud. A SQL warehouse is a compute resource that lets you run SQL commands on data objects within Databricks SQL.
+Reference: https://docs.databricks.com/sql/admin/sql-endpoints.html
+```
+```
+82. Which of the following is the benefit of using the Auto Stop feature of Databricks SQL warehouses ?
+
+    A. Improves the performance of the warehouse by automatically stopping ideal services
+    B. Minimizes the total running time of the warehouse
+    C. Provides higher security by automatically stopping unused ports of the warehouse
+    D. Increases the availability of the warehouse by automatically stopping long-running SQL queries
+    E. Databricks SQL does not have Auto Stop feature
+
+Ans: B.
+The Auto Stop feature stops the warehouse if it’s idle for a specified number of minutes.
+Reference: https://docs.databricks.com/sql/admin/sql-endpoints.html
+```
+```
+83. Which of the following alert destinations is Not supported in Databricks SQL ?
+
+  A. Slack
+  B. Webhook
+  C. SMS
+  D. Microsoft Teams
+  E. Email
+
+Ans: C
+SMS is not supported as an alert destination in Databricks SQL . While, email, webhook, Slack, and Microsoft Teams are supported alert destinations in Databricks SQL.
+Reference: https://docs.databricks.com/sql/admin/alert-destinations.html
+```
+```
+84. A data engineering team has a long-running multi-tasks Job. The team members need to be notified when the run of this job completes. Which of the following approaches can be used to send emails to the team members when the job completes ?
+
+  A. They can use Job API to programmatically send emails according to each task status
+  B. They can configure email notifications settings in the job page
+  C. There is no way to notify users when the job completes
+  D. Only Job owner can be configured to be notified when the job completes
+  E. They can configure email notifications settings per notebook in the task page
+
+Ans: B.
+Databricks Jobs supports email notifications to be notified in the case of job start, success, or failure. Simply, click Edit email notifications from the details panel in the Job page. From there, you can add one or more email addresses.
+Reference: https://docs.databricks.com/workflows/jobs/jobs.html#alerts-job
+```
+```
+85. A data engineer wants to increase the cluster size of an existing Databricks SQL warehouse. Which of the following is the benefit of increasing the cluster size of Databricks SQL warehouses ?
+
+  A. Improves the latency of the queries execution
+  B. Speeds up the start up time of the SQL warehouse
+  C. Reduces cost since large clusters use Spot instances
+  D. The cluster size of SQL warehouses is not configurable. Instead, they can increase the number of clusters
+  E. The cluster size can not be changed for existing SQL warehouses. Instead, they can enable the auto-scaling option.
+
+Ans: A.
+Cluster Size represents the number of cluster workers and size of compute resources available to run your queries and dashboards. To reduce query latency, you can increase the cluster size.
+Reference: https://docs.databricks.com/sql/admin/sql-endpoints.html#cluster-size-1
+```
+```
+86. Which of the following describes Cron syntax in Databricks Jobs ?
+
+  A. It’s an expression to represent the maximum concurrent runs of a job
+  B. It’s an expression to represent complex job schedule that can be defined programmatically
+  C. It’s an expression to represent the retry policy of a job
+  D. It’s an expression to describe the email notification events (start, success, failure)
+  E. It’s an expression to represent the run timeout of a job
+
+Ans: B.
+To define a schedule for a Databricks job, you can either interactively specify the period and starting time, or write a Cron Syntax expression. The Cron Syntax allows to represent complex job schedule that can be defined programmatically
+Reference: https://docs.databricks.com/workflows/jobs/jobs.html#schedule-a-job
+```
+```
+87. The data engineer team has a DLT pipeline that updates all the tables at defined intervals until manually stopped. The compute resources terminate when the pipeline is stopped. Which of the following best describes the execution modes of this DLT pipeline ?
+
+  A. The DLT pipeline executes in Continuous Pipeline mode under Production mode.
+  B. The DLT pipeline executes in Continuous Pipeline mode under Development mode.
+  C. The DLT pipeline executes in Triggered Pipeline mode under Production mode.
+  D. The DLT pipeline executes in Triggered Pipeline mode under Development mode.
+  E. More information is needed to determine the correct response
+
+Ans: A.
+Continuous pipelines update tables continuously as input data changes. Once an update is started, it continues to run until the pipeline is shut down. In Production mode, the Delta Live Tables system:
+  - Terminates the cluster immediately when the pipeline is stopped.
+  - Restarts the cluster for recoverable errors (e.g., memory leak or stale credentials).
+  - Retries execution in case of specific errors (e.g., a failure to start a cluster)
+Reference: https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-concepts.html
+```
+```
+88. Which part of the Databricks Platform can a data engineer use to grant permissions on tables to users ?
+
+  A. Data Studio
+  B. Cluster event log
+  C. Workflows
+  D. DBFS
+  E. Data Explorer
+
+Ans: E.
+Data Explorer in Databricks SQL allows you to manage data object permissions. This includes granting privileges on tables and databases to users or groups of users.
+Reference: https://docs.databricks.com/security/access-control/data-acl.html#data-explorer
+```
+```
+89. Which of the following commands can a data engineer use to grant full permissions to the HR team on the table employees ?
+
+  A. GRANT FULL PRIVILEGES ON TABLE employees TO hr_team
+  B. GRANT FULL PRIVILEGES ON TABLE hr_team TO employees
+  C. GRANT ALL PRIVILEGES ON TABLE employees TO hr_team
+  D. GRANT ALL PRIVILEGES ON TABLE hr_team TO employees
+  E. GRANT SELECT, MODIFY, CREATE, READ_METADATA ON TABLE employees TO hr_team
+
+Ans: C.
+ALL PRIVILEGES is used to grant full permissions on an object to a user or group of users. It is translated into all the below privileges:
+    - SELECT
+    - CREATE
+    - MODIFY
+    - USAGE
+    - READ_METADATA
+Reference: https://docs.databricks.com/security/access-control/table-acls/object-privileges.html#privileges
+```
+```
+90. A data engineer uses the following SQL query:
+      GRANT MODIFY ON TABLE employees TO hr_team
+Which of the following describes the ability given by the MODIFY privilege ?
+
+  A. It gives the ability to add data from the table
+  B. It gives the ability to delete data from the table
+  C. It gives the ability to modify data in the table
+  D. All the above abilities are given by the MODIFY privilege
+  E. None of these options correctly describe the ability given by the MODIFY privilege
+
+Ans: D.
+The MODIFY privilege gives the ability to add, delete, and modify data to or from an object.
+Reference: https://docs.databricks.com/security/access-control/table-acls/object-privileges.html#privileges
+```
+```
+91.
+
+
+```
+```
+92.
+
+
+```
+```
+
+```
 
 
 
 
-
-
-
-
-
+ 
