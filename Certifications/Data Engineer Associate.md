@@ -1654,13 +1654,451 @@ LEFT JOIN returns all values from the left table and the matched values from the
 Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-qry-select-join.html
 ```
 ```
-109.
+109. Which of the following SQL keywords can be used to rotate rows of a table by turning row values into multiple columns ?
 
+  A. ROTATE
+  B. TRANSFORM
+  C. PIVOT
+  D. GROUP BY
+  E. ZORDER BY
 
+Ans: C.
+PIVOT transforms the rows of a table by rotating unique values of a specified column list into separate columns. In other words, It converts a table from a long format to a wide format.
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-qry-select-pivot.html
 ```
 ```
-110. 
+110. Fill in the below blank to get the number of courses incremented by 1 for each student in array column students.
+      SELECT
+        faculty_id,
+        students,
+        ___________ AS new_totals
+      FROM faculties
 
+  A. TRANSFORM (students, total_courses + 1)
+  B. TRANSFORM (students, i -> i.total_courses + 1)
+  C. FILTER (students, total_courses + 1)
+  D. FILTER (students, i -> i.total_courses + 1)
+  E. CASE WHEN students.total_courses IS NOT NULL THEN students.total_courses + 1
+      ELSE NULL
+      END
 
+Ans: B.
+transform(input_array, lambd_function) is a higher order function that returns an output array from an input array by transforming each element in the array using a given lambda function.
+Example:
+  SELECT transform(array(1, 2, 3), x -> x + 1);
+  output: [2, 3, 4]
+Reference:
+https://docs.databricks.com/sql/language-manual/functions/transform.html
+https://docs.databricks.com/optimizations/higher-order-lambda-functions.html
+```
+```
+111. Fill in the below blank to successfully create a table using data from CSV files located at /path/input
+      CREATE TABLE my_table
+      (col1 STRING, col2 STRING)
+      ____________
+      OPTIONS (header = "true",
+              delimiter = ";")
+      LOCATION = "/path/input"
+
+  A. FROM CSV
+  B. USING CSV
+  C. USING DELTA
+  D. AS
+  E. AS CSV
+
+Ans: B.
+CREATE TABLE USING allows to specify an external data source type like CSV format, and with any additional options. This creates an external table pointing to files stored in an external location.
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-table-using.html
+```
+```
+112. Which of the following statements best describes the usage of CREATE SCHEMA command ?
+
+  A. It’s used to create a table schema (columns names and datatype)
+  B. It’s used to create a Hive catalog
+  C. It’s used to infer and store schema in “cloudFiles.schemaLocation”
+  D. It’s used to create a database
+  E> It’s used to merge the schema when writing data into a target table
+
+Ans: D.
+CREATE SCHEMA is an alias for CREATE DATABASE statement. While usage of SCHEMA and DATABASE is interchangeable, SCHEMA is preferred.
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-database.html
+```
+```
+113. Which of the following statements is Not true about CTAS statements ?
+
+  A. CTAS statements automatically infer schema information from query results
+  B. CTAS statements support manual schema declaration
+  C. CTAS statements stand for CREATE TABLE _ AS SELECT statement
+  D. With CTAS statements, data will be inserted during the table creation
+  E. All these statements are Not true about CTAS statements
+
+Ans: B. 
+CREATE TABLE AS SELECT statements, or CTAS statements create and populate Delta tables using the output of a SELECT query. CTAS statements automatically infer schema information from query results and do not support manual schema declaration.
+Reference: (cf. AS query clause): https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-table-using.html
+```
+```
+114. Which of the following SQL commands will append this new row to the existing Delta table users?
+
+  user_id  | name  | age
+  0015     | Adam  | 23
+
+  A. APPEND INTO users VALUES (“0015”, “Adam”, 23)
+  B. INSERT VALUES (“0015”, “Adam”, 23)  INTO users
+  C. APPEND VALUES (“0015”, “Adam”, 23) INTO users
+  D. INSERT INTO users VALUES (“0015”, “Adam”, 23)
+  E> UPDATE users VALUES (“0015”, “Adam”, 23)
+
+Ans: D.
+INSERT INTO allows inserting new rows into a Delta table. You specify the inserted rows by value expressions or the result of a query.
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-dml-insert-into.html
+```
+```
+115. Given the following Structured Streaming query:
+
+      (spark.table("orders")
+              .withColumn("total_after_tax", col("total")+col("tax"))
+          .writeStream
+              .option("checkpointLocation", checkpointPath)
+              .outputMode("append")
+              .___________
+              .table("new_orders") )
+
+Fill in the blank to make the query executes multiple micro-batches to process all available data, then stops the trigger.
+
+  A. trigger(“micro-batches”)
+  B. trigger(once=True)
+  C. trigger(processingTime=”0 seconds")
+  D. trigger(micro-batches=True)
+  E. trigger(availableNow=True)
+
+Ans: E.
+In Spark Structured Streaming, we use trigger(availableNow=True) to run the stream in batch mode where it processes all available data in multiple micro-batches. The trigger will stop on its own once it finishes processing the available data.
+Reference: https://docs.databricks.com/structured-streaming/triggers.html#configuring-incremental-batch-processing
+```
+```
+116. Which of the following techniques allows Auto Loader to track the ingestion progress and store metadata of the discovered files ?
+
+  A. mergeSchema
+  B. COPY INTO
+  C. Watermarking
+  D. Checkpointing
+  E. Z-Ordering
+
+Ans: D.
+Auto Loader keeps track of discovered files using checkpointing in the checkpoint location. Checkpointing allows Auto loader to provide exactly-once ingestion guarantees.
+Reference: https://docs.databricks.com/ingestion/auto-loader/index.html#how-does-auto-loader-track-ingestion-progress
+```
+```
+117. A data engineer has defined the following data quality constraint in a Delta Live Tables pipeline:
+
+        CONSTRAINT valid_id EXPECT (id IS NOT NULL) _____________
+
+Fill in the above blank so records violating this constraint cause the pipeline to fail.
+
+  A. ON VIOLATION FAIL
+  B. ON VIOLATION FAIL UPDATE
+  C. ON VIOLATION DROP ROW
+  D. ON VIOLATION FAIL PIPELINE
+  E. There is no need to add ON VIOLATION clause. By default, records violating the constraint cause the pipeline to fail.
+
+Ans: B.
+With ON VIOLATION FAIL UPDATE, records that violate the expectation will cause the pipeline to fail. When a pipeline fails because of an expectation violation, you must fix the pipeline code to handle the invalid data correctly before re-running the pipeline.
+Reference: https://learn.microsoft.com/en-us/azure/databricks/workflows/delta-live-tables/delta-live-tables-expectations#--fail-on-invalid-records
+```
+```
+118. In multi-hop architecture, which of the following statements best describes the Silver layer tables?
+
+  A. They maintain data that powers analytics, machine learning, and production applications
+  B. They maintain raw data ingested from various sources
+  C. The table structure in this layer resembles that of the source system table structure with any additional metadata columns like the load time, and input file name.
+  D. They provide business-level aggregated version of data
+  E. They provide a more refined view of raw data, where it’s filtered, cleaned, and enriched.
+
+Ans: E.
+Silver tables provide a more refined view of the raw data. For example, data can be cleaned and filtered at this level. And we can also join fields from various bronze tables to enrich our silver records
+Reference: https://www.databricks.com/glossary/medallion-architecture
+```
+```
+119. The data engineer team has a DLT pipeline that updates all the tables at defined intervals until manually stopped. The compute resources of the pipeline continue running to allow for quick testing. Which of the following best describes the execution modes of this DLT pipeline ?
+
+  A. The DLT pipeline executes in Continuous Pipeline mode under Production mode.
+  B. The DLT pipeline executes in Continuous Pipeline mode under Development mode.
+  C. The DLT pipeline executes in Triggered Pipeline mode under Production mode.
+  D. The DLT pipeline executes in Triggered Pipeline mode under Development mode.
+  E. More information is needed to determine the correct response
+
+Ans: B.
+Continuous pipelines update tables continuously as input data changes. Once an update is started, it continues to run until the pipeline is shut down. In Development mode, the Delta Live Tables system ease the development process by
+  - Reusing a cluster to avoid the overhead of restarts. The cluster runs for two hours when development mode is enabled.
+  - Disabling pipeline retries so you can immediately detect and fix errors.
+Reference: https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-concepts.html
+```
+```
+120. Given the following Structured Streaming query:
+    
+    (spark.readStream
+            .table("cleanedOrders")
+            .groupBy("productCategory")
+            .agg(sum("totalWithTax"))
+        .writeStream
+            .option("checkpointLocation", checkpointPath)
+            .outputMode("complete")
+            .table("aggregatedOrders")
+    )
+
+Which of the following best describe the purpose of this query in a multi-hop architecture?
+
+  A. The query is performing raw data ingestion into a Bronze table
+  B. The query is performing a hop from a Bronze table to a Silver table
+  C. The query is performing a hop from Silver layer to a Gold table
+  D. The query is performing data transfer from a Gold table into a production application
+  E. This query is performing data quality controls prior to Silver layer
+
+Ans: C. 
+The above Structured Streaming query creates business-level aggregates from clean orders data in the silver table cleanedOrders, and loads them in the gold table aggregatedOrders.
+Reference: https://www.databricks.com/glossary/medallion-architecture
+```
+```
+121. Given the following Structured Streaming query:
+
+      (spark.readStream
+              .table("orders")
+          .writeStream
+              .option("checkpointLocation", checkpointPath)
+              .table("Output_Table")
+      )
+
+Which of the following is the trigger Interval for this query ?
+
+  A. Every half second
+  B. Every half min
+  C. Every half hour
+  D. The query will run in batch mode to process all available data at once, then the trigger stops.
+  E. More information is needed to determine the correct response
+
+Ans: A.
+By default, if you don’t provide any trigger interval, the data will be processed every half second. This is equivalent to trigger(processingTime=”500ms")
+Reference: https://docs.databricks.com/structured-streaming/triggers.html#what-is-the-default-trigger-interval
+```
+```
+122. A data engineer has the following query in a Delta Live Tables pipeline
+
+      CREATE STREAMING TABLE sales_silver
+      AS
+        SELECT store_id, total + tax AS total_after_tax
+        FROM LIVE.sales_bronze
+
+The pipeline is failing to start due to an error in this query. Which of the following changes should be made to this query to successfully start the DLT pipeline ?
+
+    A. CREATE LIVE TABLE sales_silver
+        AS
+          SELECT store_id, total + tax AS total_after_tax
+          FROM STREAMING(LIVE.sales_bronze)
+    B.  CREATE STREAMING TABLE sales_silver
+        AS
+          SELECT store_id, total + tax AS total_after_tax
+          FROM LIVE(STREAM.sales_bronze)
+    C.  CREATE STREAMING TABLE sales_silver
+        AS
+          SELECT store_id, total + tax AS total_after_tax
+          FROM STREAM(sales_bronze)
+    D. CREATE STREAMING TABLE sales_silver
+        AS
+          SELECT store_id, total + tax AS total_after_tax
+          FROM STREAMING(LIVE.sales_bronze)
+    E. CREATE STREAMING TABLE sales_silver
+        AS
+          SELECT store_id, total + tax AS total_after_tax
+          FROM STREAM(LIVE.sales_bronze)
+
+Ans: E.
+In DLT pipelines, You can stream data from other tables in the same pipeline by using the STREAM() function. In this case, you must define a streaming table using the CREATE STREAMING TABLE syntax*. Remember, to query another DLT table, prepend always the LIVE. keyword to the table name.
+
+CREATE STREAMING TABLE table_name
+AS
+    SELECT *
+    FROM STREAM(LIVE.another_table)
+
+* Note that the previously used CREATE STREAMING LIVE TABLE syntax is now deprecated; however, you may still encounter it in the current exam version.
+Reference: https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-incremental-data.html#streaming-from-other-datasets-within-a-pipeline&language-sql
+```
+```
+123. In multi-hop architecture, which of the following statements best describes the Gold layer tables?
+
+  A. They provide a more refined view of the data
+  B. They maintain raw data ingested from various sources
+  C. The table structure in this layer resembles that of the source system table structure with any additional metadata columns like the load time, and input file name.
+  D. They provide business-level aggregations that power analytics, machine learning, and production applications
+  E. They represent a filtered, cleaned, and enriched version of data
+
+Ans: D. 
+Gold layer is the final layer in the multi-hop architecture, where tables provide business level aggregates often used for reporting and dashboarding, or even for Machine learning.
+Reference: https://www.databricks.com/glossary/medallion-architecture
+```
+```
+124. The data engineer team has a DLT pipeline that updates all the tables once and then stops. The compute resources of the pipeline terminate when the pipeline is stopped. Which of the following best describes the execution modes of this DLT pipeline ?
+
+  A. The DLT pipeline executes in Continuous Pipeline mode under Production mode.
+  B. The DLT pipeline executes in Continuous Pipeline mode under Development mode.
+  C. The DLT pipeline executes in Triggered Pipeline mode under Production mode.
+  D. The DLT pipeline executes in Triggered Pipeline mode under Development mode.
+  E. More information is needed to determine the correct response
+
+Ans: C.
+Triggered pipelines update each table with whatever data is currently available and then they shut down. In Production mode, the Delta Live Tables system:
+    - Terminates the cluster immediately when the pipeline is stopped.
+    - Restarts the cluster for recoverable errors (e.g., memory leak or stale credentials).
+    - Retries execution in case of specific errors (e.g., a failure to start a cluster)
+Reference: https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-concepts.html
+```
+```
+125. A data engineer needs to determine whether to use Auto Loader or COPY INTO command in order to load input data files incrementally. In which of the following scenarios should the data engineer use Auto Loader over COPY INTO command ?
+
+  A. If they are going to ingest files in the order of millions or more over time
+  B. If they are going to ingest few number of files in the order of thousands
+  C. If they are going to load a subset of re-uploaded files
+  D. If the data schema is not going to evolve frequently
+  E. There is no difference between using Auto Loader and Copy Into command
+
+Ans: A.
+Here are a few things to consider when choosing between Auto Loader and COPY INTO command:
+    - If you’re going to ingest files in the order of thousands, you can use COPY INTO. If you are expecting files in the order of millions or more over time, use Auto Loader.
+    - If your data schema is going to evolve frequently, Auto Loader provides better primitives around schema inference and evolution.
+Reference: https://docs.databricks.com/ingestion/index.html#when-to-use-copy-into-and-when-to-use-auto-loader
+```
+```
+126. From which of the following locations can a data engineer set a schedule to automatically refresh a Databricks SQL query ?
+
+  A. From the jobs Ul
+  B. From the SQL warehouses page in Databricks SQL
+  C. From the Alerts page in Databricks SQL
+  D. From the query's page in Databricks SQL
+  E. There is no way to automatically refresh a query in Databricks SQL. Schedules can be set only for dashboards to refresh their underlying queries.
+
+Ans: 
+In Databricks SQL, you can set a schedule to automatically refresh a query from the query's page.
+Reference: https://docs.databricks.com/sql/user/queries/schedule-query.html
+```
+  ![image](https://github.com/user-attachments/assets/efc3cddb-4585-47d5-9c60-7e47d0f5c39c)
+```
+127. Databricks provides a declarative ETL framework for building reliable and maintainable data processing pipelines, while maintaining table dependencies and data quality. Which of the following technologies is being described above?
+
+  A. Delta Live Tables
+  B. Delta Lake
+  C. Databricks Jobs
+  D. Unity Catalog Linage
+  E. Databricks SQL
+
+Ans: A.
+Delta Live Tables is a framework for building reliable, maintainable, and testable data processing pipelines. You define the transformations to perform on your data, and Delta Live Tables manages task orchestration, cluster management, monitoring, data quality, and error handling.
+Reference: https://docs.databricks.com/workflows/delta-live-tables/index.html
+```
+```
+128. Which of the following services can a data engineer use for orchestration purposes in Databricks platform ?
+
+  A. Delta Live Tables
+  B. Cluster Pools
+  C. Databricks Jobs
+  D. Data Explorer
+  E. Unity Catalog Linage
+
+Ans: C.
+Databricks Jobs allow to orchestrate data processing tasks. This means the ability to run and manage multiple tasks as a directed acyclic graph (DAG) in a job.
+Reference: https://docs.databricks.com/workflows/jobs/jobs.html
+```
+```
+129. A data engineer has a Job with multiple tasks that takes more than 2 hours to complete. In the last run, the final task unexpectedly failed. Which of the following actions can the data engineer perform to complete this Job Run while minimizing the execution time ?
+
+  A. They can rerun this Job Run to execute all the tasks
+  B. They can repair this Job Run so only the failed tasks will be re-executed
+  C. They need to delete the failed Run, and start a new Run for the Job
+  D. They can keep the failed Run, and simply start a new Run for the Job
+  E. They can run the Job in Production mode which automatically retries execution in case of errors
+
+Ans: B.
+You can repair failed multi-task jobs by running only the subset of unsuccessful tasks and any dependent tasks. Because successful tasks are not re-run, this feature reduces the time and resources required to recover from unsuccessful job runs.
+Reference: https://docs.databricks.com/workflows/jobs/repair-job-failures.html
+```
+```
+130. A data engineering team has a multi-tasks Job in production. The team members need to be notified in the case of job failure. Which of the following approaches can be used to send emails to the team members in the case of job failure ?
+
+  A. They can use Job API to programmatically send emails according to each task status
+  B. They can configure email notifications settings in the job page
+  C. There is no way to notify users in the case of job failure
+  D. Only Job owner can be configured to be notified in the case of job failure
+  E. They can configure email notifications settings per notebook in the task page
+
+Ans:  B.
+Databricks Jobs support email notifications to be notified in the case of job start, success, or failure. Simply, click Edit email notifications from the details panel in the Job page. From there, you can add one or more email addresses.
+Reference: https://docs.databricks.com/workflows/jobs/jobs.html#alerts-job
+```
+```
+131. For production jobs, which of the following cluster types is recommended to use?
+
+  A. All-purpose clusters
+  B. Production clusters
+  C. Job clusters
+  D. On-premises clusters
+  E. Serverless clusters
+
+Ans: C.
+Job Clusters are dedicated clusters for a job or task run. A job cluster auto terminates once the job is completed, which saves cost compared to all-purpose clusters. In addition, Databricks recommends using job clusters in production so that each job runs in a fully isolated environment.
+Reference: https://docs.databricks.com/workflows/jobs/jobs.html#choose-the-correct-cluster-type-for-your-job
+```
+```
+132. In Databricks Jobs, which of the following approaches can a data engineer use to configure a linear dependency between Task A and Task B ?
+
+  A. They can select the Task A in the Depends On field of the Task B configuration
+  B. They can assign Task A an Order number of 1, and assign Task B an Order number of 2
+  C. They can visually drag and drop an arrow from Task A to Task B in the Job canvas
+  D. They can configure the dependency at the notebook level using the dbutils.jobs utility
+  E. Databricks Jobs do not support linear dependency between tasks. This can only be achieved in Delta Live Tables pipelines
+
+Ans: A.
+You can define the order of execution of tasks in a job using the Depends on dropdown menu. You can set this field to one or more tasks in the job.
+Reference: https://docs.databricks.com/workflows/jobs/jobs.html#task-dependencies
+```
+```
+133. Which part of the Databricks Platform can a data engineer use to revoke permissions from users on tables ?
+
+  A. Data Explorer
+  B. Cluster event log
+  C. Workspace Admin Console
+  D. DBFS
+  E. There is no way to revoke permissions in Databricks platform. The data engineer needs to clone the table with the updated permissions
+
+Ans: A.
+Data Explorer in Databricks SQL allows you to manage data object permissions. This includes revoking privileges on tables and databases from users or groups of users.
+Reference: https://docs.databricks.com/security/access-control/data-acl.html#data-explorer
+```
+```
+134. A data engineer uses the following SQL query:
+        GRANT USAGE ON DATABASE sales_db TO finance_team
+Which of the following is the benefit of the USAGE  privilege ?
+
+  A. Gives read access on the database
+  B. Gives full permissions on the entire database
+  C. Gives the ability to view database objects and their metadata
+  D. No effect! but it's required to perform any action on the database
+  E. USAGE privilege is not part of the Databricks governance model
+
+Ans: D.
+The USAGE does not give any abilities, but it's an additional requirement to perform any action on a schema (database) object.
+Reference: https://docs.databricks.com/security/access-control/table-acls/object-privileges.html#privileges
+```
+```
+135. In which of the following locations can a data engineer change the owner of a table?
+
+  A. In DBFS, from the properties tab of the table’s data files
+  B. In Data Explorer, under the Permissions tab of the table's page
+  C. In Data Explorer, from the Owner field in the table's page
+  D. In Data Explorer, under the Permissions tab of the database's page, since owners are set at database-level
+  E. In Data Explorer, from the Owner field in the database's page, since owners are set at database-level
+
+Ans: C.
+From Data Explorer in Databricks SQL, you can navigate to the table's page to review and change the owner of the table. Simply, click on the Owner field, then Edit owner to set the new owner.
+Reference: https://docs.databricks.com/security/access-control/data-acl.html#manage-data-object-ownership
+```
 ```
 
+```
