@@ -2100,5 +2100,104 @@ From Data Explorer in Databricks SQL, you can navigate to the table's page to re
 Reference: https://docs.databricks.com/security/access-control/data-acl.html#manage-data-object-ownership
 ```
 ```
+136. A data science team is collaborating on a Databricks notebook. The data engineer prefers to use SQL for data extraction, while the data scientist wants to use Python for machine learning. How should they proceed within the same notebook?
+
+  A. Create separate notebooks for SQL and Python code and link them together.
+  B. Convert SQL queries to Python pandas queries for uniformity.
+  C. Use %sql for data extraction cells and %python for machine learning cells.
+  D. Merge all code into Python for consistency across the notebook.
+
+Ans: C.
+Databricks notebooks support the use of multiple programming languages in the same notebook. By using %sql for data extraction and %python for machine learning, teams can collaborate efficiently without needing to convert code or split it into multiple notebooks. This flexibility enhances productivity and keeps the code organized according to the strengths of each language.
+```
+```
+137. Given the task of dynamically generating a table name in Python using variables for region, store, and year, where the desired format for the table name is akin to "la200_sales_2022" for region="la", store="200", and year="2022", which Python command would correctly construct this table name?
+
+  A. "{region}+{store}+_sales_+{year}"
+  B. f"{region}+{store}+_sales_+{year}"
+  C. f"{region}{store}_sales_{year}"
+  D. "{region}{store}_sales_{year}"
+
+Ans: C.
+To dynamically create a string in Python that incorporates variables directly into the string's content, the f-string syntax (f"") is used. This method allows for embedding expressions inside string literals efficiently. The correct format, f"{region}{store}_sales_{year}", seamlessly integrates the variables region, store, and year with the static string parts to generate the desired table name. This approach is straightforward and eliminates the need for concatenation operators (+), providing a clean and readable solution for string construction with variable content.
+```
+```
+138. When querying data from a JSON file in Databricks SQL, what prefix should be included after the FROM keyword?
+
+  A. json
+  B. JSON
+  C. TEXT
+  D. FILE
+
+Ans: A.
+In Databricks SQL, to query data from a JSON file, you should use the json keyword in the USING clause to specify the format of the file being queried. This keyword tells Databricks to handle the data as JSON, enabling features like schema inference and proper parsing of the JSON content. Other options like FILE or TEXT are incorrect for this use case.
+```
+```
+139. You are a data engineer overseeing a critical daily data processing pipeline. This pipeline includes tasks for data ingestion, transformation, and finally, loading the data into a data warehouse. One morning, you receive an alert that the job has failed during the transformation task due to an unexpected outage in the cluster. What action should you take to minimize downtime and ensure data integrity in your daily pipeline?
+
+
+
 
 ```
+```
+140.
+
+
+
+```
+```
+141.
+
+
+```
+```
+142.
+
+```
+```
+143.
+
+
+```
+```
+144.
+
+
+```
+```
+145.
+
+
+```
+```
+146.
+
+
+```
+```
+147.
+
+
+```
+```
+148.
+
+
+```
+```
+149.
+
+
+```
+```
+150.
+
+
+```
+```
+151.
+
+```
+
+
+
