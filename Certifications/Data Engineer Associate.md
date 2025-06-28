@@ -1361,20 +1361,306 @@ The MODIFY privilege gives the ability to add, delete, and modify data to or fro
 Reference: https://docs.databricks.com/security/access-control/table-acls/object-privileges.html#privileges
 ```
 ```
-91.
+91. One of the foundational technologies provided by the Databricks Lakehouse Platform is an open-source, file-based storage format that brings reliability to data lakes. Which of the following technologies is being described in the above statement?
+
+  A. Delta Lives Tables (DLT)
+  B. Delta Lake
+  C. Apache Spark
+  D. Unity Catalog
+  E. Photon
+
+Ans: B.
+Delta Lake is an open source technology that extends Parquet data files with a file-based transaction log for ACID transactions that brings reliability to data lakes.
+Reference: https://docs.databricks.com/delta/index.html
+```
+```
+92. Which of the following commands can a data engineer use to purge stale data files of a Delta table?
+
+  A. DELETE
+  B. GARBAGE COLLECTION
+  C. CLEAN
+  D. VACUUM
+  E. OPTIMIZE
+
+Ans: D.
+The VACUUM command deletes the unused data files older than a specified data retention period.
+Reference: https://docs.databricks.com/sql/language-manual/delta-vacuum.html
+```
+```
+93. In Databricks Repos (Git folders), which of the following operations a data engineer can use to save local changes of a repo to its remote repository ?
+
+  A. Create Pull Request
+  B. Commit & Pull
+  C. Commit & Push
+  D. Merge & Push
+  E. Merge & Pull
+
+Ans: C.
+Commit & Push is used to save the changes on a local repo, then uploads this local repo content to the remote repository.
+References:
+https://docs.databricks.com/repos/index.html
+https://github.com/git-guides/git-push
+```
+```
+94. In Delta Lake tables, which of the following is the primary format for the transaction log files?
+
+  A. Delta
+  B. Parquet
+  C. JSON
+  D. Hive-specific format
+  E. XML
+
+Ans: C.
+Delta Lake builds upon standard data formats. Delta lake table gets stored on the storage in one or more data files in Parquet format, along with transaction logs in JSON format.
+Reference: https://docs.databricks.com/delta/index.html
+```
+```
+95. Which of the following functionalities can be performed in Databricks Repos (Git folders)?
+
+  A. Create pull requests
+  B. Create new remote Git repositories
+  C. Delete branches
+  D. Create CI/CD pipelines
+  E. Pull from a remote Git repository
+
+Ans: E.
+Databricks Repos supports git Pull operation. It is used to fetch and download content from a remote repository and immediately update the local repo to match that content.
+References:
+https://docs.databricks.com/repos/index.html
+https://github.com/git-guides/git-pull
+```
+```
+96. Which of the following locations completely hosts the customer data ?
+
+  A. Customer's cloud account
+  B. Control plane
+  C. Databricks account
+  D. Databricks-managed cluster
+  E. Repos
+
+Ans: A.
+According to the Databricks Lakehouse architecture, the storage account hosting the customer data is provisioned in the data plane in the Databricks customer's cloud account.
+Reference: https://docs.databricks.com/getting-started/overview.html
+```
+```
+97. If ​​the default notebook language is Python, which of the following options a data engineer can use to run SQL commands in this Python Notebook ?
+
+  A. They need first to import the SQL library in a cell
+  B. This is not possible! They need to change the default language of the notebook to SQL
+  C. Databricks detects cells language automatically, so they can write SQL syntax in any cell
+  D. They can add %language magic command at the start of a cell to force language detection.
+  E. They can add %sql at the start of a cell.
+
+Ans: E.
+By default, cells use the default language of the notebook. You can override the default language in a cell by using the language magic command at the beginning of a cell. The supported magic commands are: %python, %sql, %scala, and %r.
+Reference: https://docs.databricks.com/notebooks/notebooks-code.html
+```
+```
+98. A junior data engineer uses the built-in Databricks Notebooks versioning for source control. A senior data engineer recommended using Databricks Repos (Git folders) instead. Which of the following could explain why Databricks Repos is recommended instead of Databricks Notebooks versioning?
+
+  A. Databricks Repos supports creating and managing branches for development work.
+  B. Databricks Repos automatically tracks the changes and keeps the history.
+  C. Databricks Repos allows users to resolve merge conflicts
+  D. Databricks Repos allows users to restore previous versions of a notebook
+  E. All of these advantages explain why Databricks Repos is recommended instead of Notebooks versioning
+
+Ans: A.
+One advantage of Databricks Repos over the built-in Databricks Notebooks versioning is that Databricks Repos supports creating and managing branches for development work.
+Reference: https://docs.databricks.com/repos/index.html
+```
+```
+99. Which of the following services provides a data warehousing experience to its users?
+
+  A. Databricks SQL
+  B. Databricks Machine Learning
+  C. Data Science and Engineering Workspace
+  D. Unity Catalog
+  E. Delta Lives Tables (DLT)
+
+Ans: A.
+Databricks SQL (DB SQL) is a data warehouse on the Databricks Lakehouse Platform that lets you run all your SQL and BI applications at scale.
+Reference: https://www.databricks.com/product/databricks-sql
+```
+```
+100. A data engineer noticed that there are unused data files in the directory of a Delta table. They executed the VACUUM command on this table; however, only some of those unused data files have been deleted. Which of the following could explain why only some of the unused data files have been deleted after running the VACUUM command ?
+
+  A. The deleted data files were larger than the default size threshold. While the remaining files are smaller than the default size threshold and can not be deleted.
+  B. The deleted data files were smaller than the default size threshold. While the remaining files are larger than the default size threshold and can not be deleted.
+  C. The deleted data files were older than the default retention threshold. While the remaining files are newer than the default retention threshold and can not be deleted.
+  D. The deleted data files were newer than the default retention threshold. While the remaining files are older than the default retention threshold and can not be deleted.
+  E. More information is needed to determine the correct answer
+
+Ans: C.
+Running the VACUUM command on a Delta table deletes the unused data files older than a specified data retention period. Unused files newer than the default retention threshold are kept untouched.
+Reference: https://docs.databricks.com/sql/language-manual/delta-vacuum.html
+```
+```
+101. The data engineering team has a Delta table called products that contains products’ details including the net price. Which of the following code blocks will apply a 50% discount on all the products where the price is greater than 1000 and save the new price to the table?
+
+  A. UPDATE products SET price = price * 0.5 WHERE price >= 1000;
+  B. SELECT price * 0.5 AS new_price FROM products WHERE price > 1000;
+  C. MERGE INTO products WHERE price < 1000 WHEN MATCHED UPDATE price = price * 0.5;
+  D. UPDATE products SET price = price * 0.5 WHERE price > 1000;
+  E. MERGE INTO products WHERE price > 1000 WHEN MATCHED UPDATE price = price * 0.5;
+
+Ans: D.
+The UPDATE statement is used to modify the existing records in a table that match the WHERE condition. In this case, we are updating the products where the price is strictly greater than 1000.
+Syntax:
+    UPDATE table_name
+    SET column_name = expr
+    WHERE condition
+Reference: https://docs.databricks.com/sql/language-manual/delta-update.html
+```
+```
+102. A data engineer wants to create a relational object by pulling data from two tables. The relational object will only be used in the current session. In order to save on storage costs, the date engineer wants to avoid copying and storing physical data. Which of the following relational objects should the data engineer create?
+
+  A. External table
+  B. Temporary view
+  C. Managed table
+  D. Global Temporary view
+  E. View
+
+Ans: B.
+In order to avoid copying and storing physical data, the data engineer must create a view object. A view in databricks is a virtual table that has no physical data. It’s just a saved SQL query against actual tables. The view type should be Temporary view since it’s tied to a Spark session and dropped when the session ends.
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-view.html
+```
+```
+103. A data engineer has a database named db_hr, and they want to know where this database was created in the underlying storage. Which of the following commands can the data engineer use to complete this task?
+
+  A. DESCRIBE db_hr
+  B. DESCRIBE EXTENDED db_hr
+  C. DESCRIBE DATABASE db_hr
+  D. SELECT location FROM db_hr.db
+  E. There is no need for a command since all databases are created under the default hive metastore directory
+
+Ans: C.
+The DESCRIBE DATABASE or DESCRIBE SCHEMA returns the metadata of an existing database (schema). The metadata information includes the database’s name, comment, and location on the filesystem. If the optional EXTENDED option is specified, database properties are also returned.
+Syntax:
+    DESCRIBE DATABASE [ EXTENDED ] database_name
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-aux-describe-schema.html
+```
+```
+104. Which of the following commands a data engineer can use to register the table orders from an existing SQLite database ?
+
+    A. CREATE TABLE orders
+        USING sqlite
+        OPTIONS (
+          url "jdbc:sqlite:/bookstore.db",
+          dbtable "orders"
+        )
+    B. CCREATE TABLE orders
+        USING org.apache.spark.sql.jdbc
+        OPTIONS (
+          url "jdbc:sqlite:/bookstore.db",
+          dbtable "orders"
+        )
+    C. CREATE TABLE orders
+        USING cloudfiles
+        OPTIONS (
+          url "jdbc:sqlite:/bookstore.db",
+          dbtable "orders"
+        )
+    D. CREATE TABLE orders
+        USING EXTERNAL
+        OPTIONS (
+          url "jdbc:sqlite:/bookstore.db",
+          dbtable "orders"
+        )
+    E. CREATE TABLE orders
+        USING DATABASE
+        OPTIONS (
+            url "jdbc:sqlite:/bookstore.db",
+            dbtable "orders"
+        )
+
+Ans: B.
+Using the JDBC library, Spark SQL can extract data from any existing relational database that supports JDBC. Examples include mysql, postgres, SQLite, and more.
+Reference: https://learn.microsoft.com/en-us/azure/databricks/external-data/jdbc
+```
+```
+105. When dropping a Delta table, which of the following explains why both the table's metadata and the data files will be deleted ?
+
+  A. The table is shallow cloned
+  B. The table is external
+  C. The user running the command has the necessary permissions to delete the data files
+  D. The table is managed
+  E. The data files are older than the default retention period
+
+Ans: D.
+Managed tables are tables whose metadata and the data are managed by Databricks. When you run DROP TABLE on a managed table, both the metadata and the underlying data files are deleted.
+Reference: https://docs.databricks.com/lakehouse/data-objects.html#what-is-a-managed-table
+```
+```
+106. Given the following commands:
+    CREATE DATABASE db_hr;
+    USE db_hr;
+    CREATE TABLE employees;
+In which of the following locations will the employees table be located?
+
+  A. dbfs:/user/hive/warehouse
+  B. dbfs:/user/hive/warehouse/db_hr.db
+  C. dbfs:/user/hive/warehouse/db_hr
+  D. dbfs:/user/hive/databases/db_hr.db
+  E. More information is needed to determine the correct answer
+
+Ans: B.
+Since we are creating the database here without specifying a LOCATION clause, the database will be created in the default warehouse directory under dbfs:/user/hive/warehouse. The database folder have the extension (.db). And since we are creating the table also without specifying a LOCATION clause, the table becomes a managed table created under the database directory (in db_hr.db folder)
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-ddl-create-schema.html
+```
+```
+107. Which of the following code blocks can a data engineer use to create a Python function to multiply two integers and return the result?
+
+    A. def multiply_numbers(num1, num2):
+        print(num1 * num2)
+    B. def fun: multiply_numbers(num1, num2):
+        return num1 * num2
+    C. def multiply_numbers(num1, num2):
+        return num1 * num2
+    D. fun multiply_numbers(num1, num2):
+        return num1 * num2
+    E. fun def multiply_numbers(num1, num2):
+        return num1 * num2
+
+Ans: C.
+In Python, a function is defined using the def keyword. Here, we used the return keyword since the question clearly asks to return the result, and not printing the output.
+Syntax:
+    def function_name(params):
+        return params
+Reference: https://www.w3schools.com/python/python_functions.asp
+```
+```
+108. Given the following 2 tables:
+```
+  
+  ![image](https://github.com/user-attachments/assets/4a7d3eb6-edb9-4ff7-a140-7ec834b31788)
+
+```
+Fill in the blank to make the following query returns the below result:
+    SELECT students.name, students.age, enrollments.course_id
+    FROM students
+    _____________ enrollments
+    ON students.student_id = enrollments.student_id
+```
+   ![image](https://github.com/user-attachments/assets/dd920ff2-46cb-496d-918f-5e7e2587ebc0)
+```
+  A. RIGHT JOIN
+  B. LEFT JOIN
+  C. INNER JOIN
+  D. ANTI JOIN
+  E. CROSS JOIN
+
+Ans: B.
+LEFT JOIN returns all values from the left table and the matched values from the right table, or appends NULL if there is no match. In the above example, we see NULL in the course_id of John (U0003) since he is not enrolled in any course.
+Reference: https://docs.databricks.com/sql/language-manual/sql-ref-syntax-qry-select-join.html
+```
+```
+109.
 
 
 ```
 ```
-92.
+110. 
 
 
 ```
-```
 
-```
-
-
-
-
- 
